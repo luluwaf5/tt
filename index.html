@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F5 Train Tracker - Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-container img {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #333;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        .login-container button:hover {
+            background-color: #005a99;
+        }
+        .login-container footer {
+            margin-top: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <img src="f5-logo.png" alt="F5 Logo">
+        <h2>Login to F5 Train Tracker</h2>
+        <input type="text" id="username" placeholder="Username" aria-label="Username">
+        <input type="password" id="password" placeholder="Password" aria-label="Password">
+        <button onclick="login()">Login</button>
+        <p class="error" id="error-message"></p>
+        <footer>
+            &copy; 2024 F5 Train Tracker. All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        // Array of valid username and password combinations
+        const validUsers = [{ username: 'user1', password: 'pass123' }];
+
+        function login() {
+            const enteredUsername = document.getElementById('username').value;
+            const enteredPassword = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            // Clear any previous error message
+            errorMessage.textContent = '';
+
+            // Validate login credentials
+            const user = validUsers.find(user => 
+                user.username === enteredUsername && user.password === enteredPassword
+            );
+
+            if (user) {
+                window.location.href = 'fill-in-the-blankss.html';  // Redirect to the Fill in the Blanks page
+            } else {
+                errorMessage.textContent = 'Invalid username or password.';
+            }
+        }
+    </script>
+
+</body>
+</html>
+

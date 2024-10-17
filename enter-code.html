@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Code</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; text-align: center; }
+        input, button { padding: 15px; width: 100%; max-width: 300px; margin: 20px 0; border-radius: 8px; }
+        button { background-color: #007ACC; color: white; }
+    </style>
+</head>
+<body>
+
+    <h1>Enter the Code</h1>
+    <input type="text" id="codeInput" placeholder="Enter code">
+    <button onclick="checkCode()">Submit</button>
+    <p id="errorMessage" style="color:red;"></p>
+
+    <script>
+        function checkCode() {
+            const enteredCode = document.getElementById('codeInput').value;
+            if (enteredCode === '1234') {
+                window.location.href = 'fill-the-slots.html';  // Added .html extension to the URL
+            } else {
+                document.getElementById('errorMessage').textContent = 'Incorrect code';
+            }
+        }
+    </script>
+</body>
+</html>

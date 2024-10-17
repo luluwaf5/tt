@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill in the Slots</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .slot-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slot-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1.2rem;
+            color: #007ACC;
+        }
+
+        .blanks-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .blank {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 1.5em;
+            border: 2px solid #333;
+            background-color: white;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #005a99;
+        }
+
+        #message {
+            font-size: 1.5em;
+            color: green;
+            margin-top: 20px;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Allocate the correct tickets </h1>
+
+    <!-- Slot 1 -->
+    <div class="slot-container">
+        <span class="slot-label">Slot 1</span>
+        <div class="blanks-container">
+            <span class="blank" id="slot1-1">_</span>
+            <span class="blank" id="slot1-2">_</span>
+            <span class="blank" id="slot1-3">_</span>
+            <span class="blank" id="slot1-4">_</span>
+            <span class="blank" id="slot1-5">_</span>
+        </div>
+    </div>
+
+    <!-- Slot 2 -->
+    <div class="slot-container">
+        <span class="slot-label">Slot 2</span>
+        <div class="blanks-container">
+            <span class="blank" id="slot2-1">_</span>
+            <span class="blank" id="slot2-2">_</span>
+            <span class="blank" id="slot2-3">_</span>
+            <span class="blank" id="slot2-4">_</span>
+            <span class="blank" id="slot2-5">_</span>
+        </div>
+    </div>
+
+    <!-- Slot 3 -->
+    <div class="slot-container">
+        <span class="slot-label">Slot 3</span>
+        <div class="blanks-container">
+            <span class="blank" id="slot3-1">_</span>
+            <span class="blank" id="slot3-2">_</span>
+            <span class="blank" id="slot3-3">_</span>
+            <span class="blank" id="slot3-4">_</span>
+            <span class="blank" id="slot3-5">_</span>
+        </div>
+    </div>
+
+    <!-- Slot 4 -->
+    <div class="slot-container">
+        <span class="slot-label">Slot 4</span>
+        <div class="blanks-container">
+            <span class="blank" id="slot4-1">_</span>
+            <span class="blank" id="slot4-2">_</span>
+            <span class="blank" id="slot4-3">_</span>
+            <span class="blank" id="slot4-4">_</span>
+            <span class="blank" id="slot4-5">_</span>
+        </div>
+    </div>
+
+    <input type="text" id="answerInput" placeholder="Enter your answer">
+    <button onclick="checkAnswer()">Submit</button>
+
+    <div id="message">Congratulations! You've unlocked the train schedule.</div>
+
+    <script>
+        const correctAnswers = [
+            "A1", "A2", "A3", "A4", "A5",  // Slot 1 answers
+            "B1", "B2", "B3", "B4", "B5",  // Slot 2 answers
+            "C1", "C2", "C3", "C4", "C5",  // Slot 3 answers
+            "D1", "D2", "D3", "D4", "D5"   // Slot 4 answers
+        ];
+
+        let filledCount = 0;
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById("answerInput").value.toUpperCase();
+            const blanks = document.querySelectorAll(".blank");
+            let found = false;
+
+            // Check if the answer matches any correct answers and fill the blank
+            correctAnswers.forEach((answer, index) => {
+                if (userAnswer === answer && blanks[index].textContent === "_") {
+                    blanks[index].textContent = answer;
+                    filledCount++;
+                    found = true;
+                }
+            });
+
+            // Clear the input field
+            document.getElementById("answerInput").value = "";
+
+            // If answer is incorrect
+            if (!found) {
+                alert("Incorrect answer please try again.");
+            }
+
+            // Check if all slots are filled
+            if (filledCount === correctAnswers.length) {
+                document.getElementById("message").style.display = "block";
+                setTimeout(() => {
+                    window.location.href = 'train-schedule.html';  // Redirect to the Train Schedule page
+                }, 2000);
+            }
+        }
+    </script>
+
+</body>
+</html>

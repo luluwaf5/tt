@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F5 Train Tracker - Train Schedule</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .schedule-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 1.2rem;  /* Increase font size for visibility */
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007ACC;
+            color: white;
+        }
+        td {
+            background-color: #fff;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005a99;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="schedule-container">
+        <h1>Train Schedule</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Train Number</th>
+                    <th>Route</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1001</td>
+                    <td>London - Manchester</td>
+                    <td>08:30 AM</td>
+                    <td>10:45 AM</td>
+                    <td>On Time</td>
+                </tr>
+                <tr>
+                    <td>1002</td>
+                    <td>London - Birmingham</td>
+                    <td>09:00 AM</td>
+                    <td>10:15 AM</td>
+                    <td>Delayed</td>
+                </tr>
+                <tr>
+                    <td>1003</td>
+                    <td>Manchester - Leeds</td>
+                    <td>09:15 AM</td>
+                    <td>10:30 AM</td>
+                    <td>On Time</td>
+                </tr>
+                <tr>
+                    <td>1004</td>
+                    <td>Birmingham - Bristol</td>
+                    <td>10:00 AM</td>
+                    <td>11:50 AM</td>
+                    <td>Cancelled</td>
+                </tr>
+                <tr>
+                    <td>1005</td>
+                    <td>Leeds - London</td>
+                    <td>11:00 AM</td>
+                    <td>01:30 PM</td>
+                    <td>On Time</td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="window.location.href='index.html'">Log Out</button>
+    </div>
+
+</body>
+</html>
