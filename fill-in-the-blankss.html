@@ -16,24 +16,22 @@
         }
 
         h1 {
-            font-size: 1.8rem; /* Adjust font size for smaller screens */
+            font-size: 2rem;
             color: #333;
-            text-align: center;
         }
 
         .blanks-container {
             display: flex;
-            flex-wrap: wrap; /* Enable wrapping for small screens */
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
         }
 
         .blank {
-            width: 80px; /* Decrease width for mobile */
-            height: 50px; /* Adjust height */
+            width: 120px; /* Increased width */
+            height: 60px; /* Increased height */
             text-align: center;
-            font-size: 1em; /* Adjust font size */
+            font-size: 1.2em; /* Adjust font size */
             border: 2px solid #333;
             background-color: white;
             display: flex;
@@ -42,10 +40,10 @@
         }
 
         input[type="text"] {
-            padding: 12px;
+            padding: 15px;
             font-size: 1rem;
             width: 100%;
-            max-width: 280px; /* Reduce max width for mobile */
+            max-width: 300px;
             margin-bottom: 20px;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -60,9 +58,6 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            width: 100%; /* Make button full width on small screens */
-            max-width: 200px; /* Set a max width */
-            text-align: center;
         }
 
         button:hover {
@@ -70,19 +65,10 @@
         }
 
         #codeMessage {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: green;
             margin-top: 20px;
             display: none;
-            text-align: center;
-        }
-
-        #hintMessage {
-            font-size: 1.2rem;
-            color: orange;
-            margin-top: 20px;
-            display: none;
-            text-align: center;
         }
 
         #continueButton {
@@ -95,38 +81,10 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            width: 100%;
-            max-width: 200px;
-            text-align: center;
         }
 
         #continueButton:hover {
             background-color: #005a99;
-        }
-
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.5rem; /* Further reduce font size for smaller screens */
-            }
-
-            .blank {
-                width: 60px; /* Smaller blanks for mobile */
-                height: 40px; /* Adjust height */
-                font-size: 0.9em; /* Adjust font size */
-            }
-
-            input[type="text"] {
-                font-size: 0.9rem;
-                padding: 10px;
-            }
-
-            button {
-                font-size: 0.9rem;
-            }
-
-            #codeMessage, #hintMessage {
-                font-size: 1rem;
-            }
         }
 
     </style>
@@ -151,7 +109,6 @@
     
     <p id="errorMessage" style="color:red;"></p>
     <p id="codeMessage">Your Code: 1234</p>
-    
     <button id="continueButton" onclick="continueToNext()">Continue</button>
 
     <script>
@@ -159,38 +116,41 @@
         let filledCount = 0;
 
         function checkAnswer() {
-            const userAnswer = document.getElementById('answerInput').value.toLowerCase();
+            const userAnswer = document.getElementById('answerInput').value.toLowerCase();  // Convert to lowercase
             const blanks = document.getElementsByClassName('blank');
             let answerFound = false;
 
+            // Clear error message
             document.getElementById('errorMessage').textContent = '';
 
+            // Check if the answer matches and fill the next blank
             correctAnswers.forEach((answer, index) => {
-                if (userAnswer === answer.toLowerCase() && blanks[index].textContent === "_") {
+                if (userAnswer === answer.toLowerCase() && blanks[index].textContent === "_") {  // Convert correctAnswer to lowercase
                     blanks[index].textContent = answer;
                     filledCount++;
                     answerFound = true;
                 }
             });
 
+            // Show error message if the answer is incorrect
             if (!answerFound) {
                 document.getElementById('errorMessage').textContent = 'Incorrect answer, please try again.';
             }
 
+            // Clear input field after submission
             document.getElementById('answerInput').value = "";
 
+            // Check if all blanks are filled
             if (filledCount === correctAnswers.length) {
                 document.getElementById('codeMessage').style.display = 'block';
-                document.getElementById('hintMessage').style.display = 'block'; // Show the hint message
                 document.getElementById('continueButton').style.display = 'block';
             }
         }
 
         function continueToNext() {
-            window.location.href = 'enter-code.html';
+            window.location.href = 'enter-code.html';  // Redirect to the Enter Code page
         }
     </script>
 
 </body>
 </html>
-
