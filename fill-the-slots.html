@@ -41,12 +41,15 @@
         }
 
         .blank {
-            width: 40px;
+            width: 120px;
             height: 40px;
             text-align: center;
-            font-size: 1.5em;
+            font-size: 1.2em;
             border: 2px solid #333;
             background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         input[type="text"] {
@@ -81,15 +84,52 @@
             display: none;
         }
 
+        #hintMessage {
+            font-size: 1.5em;
+            color: orange;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #errorMessage {
+            color: red;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #rateLimitMessage {
+            color: red;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #trainTimesButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none; /* Initially hidden */
+        }
+
+        #trainTimesButton:hover {
+            background-color: #005a99;
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>Allocate the correct tickets </h1>
+    <h1>Allocate the correct tickets</h1>
 
     <!-- Slot 1 -->
     <div class="slot-container">
-        <span class="slot-label">Slot 1</span>
+        <span class="slot-label">South Western Railway </span>
         <div class="blanks-container">
             <span class="blank" id="slot1-1">_</span>
             <span class="blank" id="slot1-2">_</span>
@@ -101,7 +141,7 @@
 
     <!-- Slot 2 -->
     <div class="slot-container">
-        <span class="slot-label">Slot 2</span>
+        <span class="slot-label">West Midlands Railway </span>
         <div class="blanks-container">
             <span class="blank" id="slot2-1">_</span>
             <span class="blank" id="slot2-2">_</span>
@@ -113,7 +153,7 @@
 
     <!-- Slot 3 -->
     <div class="slot-container">
-        <span class="slot-label">Slot 3</span>
+        <span class="slot-label">Northern Railway </span>
         <div class="blanks-container">
             <span class="blank" id="slot3-1">_</span>
             <span class="blank" id="slot3-2">_</span>
@@ -125,7 +165,7 @@
 
     <!-- Slot 4 -->
     <div class="slot-container">
-        <span class="slot-label">Slot 4</span>
+        <span class="slot-label">South Eastern Railway </span>
         <div class="blanks-container">
             <span class="blank" id="slot4-1">_</span>
             <span class="blank" id="slot4-2">_</span>
@@ -139,18 +179,33 @@
     <button onclick="checkAnswer()">Submit</button>
 
     <div id="message">Congratulations! You've unlocked the train schedule.</div>
+    <div id="hintMessage">⚠️ One of your tickets has been exposed to bots! Check Oxford Street for unauthorized data scraping. Use this clue in the next task.</div>
+    <p id="errorMessage"></p>
+    <p id="rateLimitMessage">Rate limit exceeded! Please wait before submitting again.</p>
+
+    <!-- Button to show train times, initially hidden -->
+    <button id="trainTimesButton" onclick="showTrainTimes()">Click to See Train Times</button>
 
     <script>
         const correctAnswers = [
-            "A1", "A2", "A3", "A4", "A5",  // Slot 1 answers
-            "B1", "B2", "B3", "B4", "B5",  // Slot 2 answers
-            "C1", "C2", "C3", "C4", "C5",  // Slot 3 answers
-            "D1", "D2", "D3", "D4", "D5"   // Slot 4 answers
+            "PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES",  // Slot 1 answers
+            "LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA",    // Slot 2 answers
+            "DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER",     // Slot 3 answers
+            "ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"        // Slot 4 answers
         ];
 
         let filledCount = 0;
+        let submissionCount = 0;
+        const RATE_LIMIT = 5; // Allow only 5 submissions
+        const TIMEOUT = 5000; // 5 seconds delay between submissions
+        let rateLimited = false; // Track if rate limit is active
 
         function checkAnswer() {
+            if (rateLimited) {
+                document.getElementById('rateLimitMessage').style.display = 'block';
+                return;
+            }
+
             const userAnswer = document.getElementById("answerInput").value.toUpperCase();
             const blanks = document.querySelectorAll(".blank");
             let found = false;
@@ -169,16 +224,37 @@
 
             // If answer is incorrect
             if (!found) {
-                alert("Incorrect answer please try again.");
+                document.getElementById('errorMessage').textContent = 'Incorrect answer, please try again.';
+                document.getElementById('errorMessage').style.display = 'block';
+            } else {
+                document.getElementById('errorMessage').style.display = 'none'; // Clear error on correct submission
+                submissionCount++;
+            }
+
+            // Rate limit handling
+            if (submissionCount >= RATE_LIMIT) {
+                rateLimited = true;
+                document.getElementById('rateLimitMessage').style.display = 'block';
+                setTimeout(() => {
+                    rateLimited = false;
+                    submissionCount = 0; // Reset submission count after timeout
+                    document.getElementById('rateLimitMessage').style.display = 'none';
+                }, TIMEOUT);
             }
 
             // Check if all slots are filled
             if (filledCount === correctAnswers.length) {
+                // Show the "Click to See Train Times" button
+                document.getElementById("trainTimesButton").style.display = "block";
+
+                // Show the success message
                 document.getElementById("message").style.display = "block";
-                setTimeout(() => {
-                    window.location.href = 'train-schedule.html';  // Redirect to the Train Schedule page
-                }, 2000);
             }
+        }
+
+        function showTrainTimes() {
+            // Redirect or display train times
+            window.location.href = 'train-schedule.html';  // You can update the link as necessary
         }
     </script>
 
