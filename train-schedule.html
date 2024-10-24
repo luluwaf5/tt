@@ -14,51 +14,79 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
         }
+
         .schedule-container {
             background-color: white;
-            padding: 40px;
+            padding: 20px; /* Reduced padding for mobile */
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            width: 100%;
+            width: 90%; /* Use a percentage for responsive width */
             max-width: 800px;
             text-align: center;
         }
+
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem; /* Reduced font size for mobile */
             color: #333;
             margin-bottom: 20px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            font-size: 1.2rem;  /* Increase font size for visibility */
+            font-size: 1rem;  /* Adjust font size for visibility */
+            overflow-x: auto;
         }
+
         th, td {
-            padding: 15px;
+            padding: 10px; /* Reduced padding for mobile */
             border: 1px solid #ddd;
             text-align: center;
         }
+
         th {
             background-color: #007ACC;
             color: white;
         }
+
         td {
             background-color: #fff;
         }
+
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 12px 24px; /* Adjust padding for mobile */
+            font-size: 1rem;
             background-color: #007ACC;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #005a99;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem; /* Adjust heading font size for smaller screens */
+            }
+
+            table {
+                font-size: 0.9rem; /* Smaller font size on mobile */
+            }
+
+            th, td {
+                padding: 8px; /* Further reduce padding on smaller screens */
+            }
+
+            button {
+                font-size: 0.9rem; /* Smaller button font size */
+                padding: 10px 20px; /* Adjust button padding */
+            }
         }
     </style>
 </head>
@@ -107,7 +135,7 @@
                 </tr>
                 <tr>
                     <td>1005</td>
-                    <td>Lecicester - Oxford Street </td>
+                    <td>Leicester - Oxford Street</td>
                     <td>11:00 AM</td>
                     <td>01:30 PM</td>
                     <td>On Time</td>
@@ -119,3 +147,4 @@
 
 </body>
 </html>
+
