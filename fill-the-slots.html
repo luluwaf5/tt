@@ -89,15 +89,7 @@
             text-align: center;
         }
 
-        #hintMessage {
-            font-size: 1.2rem;
-            color: orange;
-            margin-top: 20px;
-            display: none;
-            text-align: center;
-        }
-
-        #errorMessage, #rateLimitMessage {
+        #errorMessage {
             color: red;
             font-size: 1rem;
             margin-top: 10px;
@@ -143,7 +135,7 @@
                 font-size: 0.9rem;
             }
 
-            #message, #hintMessage {
+            #message {
                 font-size: 1rem;
             }
         }
@@ -156,7 +148,7 @@
 
     <!-- Slot 1 -->
     <div class="slot-container">
-        <span class="slot-label">South Western Railway </span>
+        <span class="slot-label">South Western Railway</span>
         <div class="blanks-container">
             <span class="blank" id="slot1-1">_</span>
             <span class="blank" id="slot1-2">_</span>
@@ -168,7 +160,7 @@
 
     <!-- Slot 2 -->
     <div class="slot-container">
-        <span class="slot-label">West Midlands Railway </span>
+        <span class="slot-label">West Midlands Railway</span>
         <div class="blanks-container">
             <span class="blank" id="slot2-1">_</span>
             <span class="blank" id="slot2-2">_</span>
@@ -180,7 +172,7 @@
 
     <!-- Slot 3 -->
     <div class="slot-container">
-        <span class="slot-label">Northern Railway </span>
+        <span class="slot-label">Northern Railway</span>
         <div class="blanks-container">
             <span class="blank" id="slot3-1">_</span>
             <span class="blank" id="slot3-2">_</span>
@@ -192,7 +184,7 @@
 
     <!-- Slot 4 -->
     <div class="slot-container">
-        <span class="slot-label">South Eastern Railway </span>
+        <span class="slot-label">South Eastern Railway</span>
         <div class="blanks-container">
             <span class="blank" id="slot4-1">_</span>
             <span class="blank" id="slot4-2">_</span>
@@ -202,81 +194,43 @@
         </div>
     </div>
 
-    <input type="text" id="answerInput" placeholder="Enter your answer">
+    <input type="text" id="answerInput" placeholder="Enter 'admin'">
     <button onclick="checkAnswer()">Submit</button>
 
     <div id="message">Congratulations! You've unlocked the train schedule.</div>
-    <div id="hintMessage">⚠️ One of your tickets has been exposed to bots! Check Oxford Street for unauthorized data scraping. Use this clue in the next task.</div>
     <p id="errorMessage"></p>
-    <p id="rateLimitMessage">Rate limit exceeded! Please wait before submitting again.</p>
 
     <!-- Button to show train times, initially hidden -->
     <button id="trainTimesButton" onclick="showTrainTimes()">Click to See Train Times</button>
 
     <script>
-        const correctAnswers = [
-            "PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES",  // Slot 1 answers
-            "LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA",    // Slot 2 answers
-            "DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER",     // Slot 3 answers
-            "ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"        // Slot 4 answers
-        ];
-
+        const commonAnswer = "ADMIN"; // Common answer for all blanks
         let filledCount = 0;
-        let submissionCount = 0;
-        const RATE_LIMIT = 5; // Allow only 5 submissions
-        const TIMEOUT = 5000; // 5 seconds delay between submissions
-        let rateLimited = false; // Track if rate limit is active
 
         function checkAnswer() {
-            if (rateLimited) {
-                document.getElementById('rateLimitMessage').style.display = 'block';
-                return;
-            }
-
             const userAnswer = document.getElementById("answerInput").value.toUpperCase();
             const blanks = document.querySelectorAll(".blank");
-            let found = false;
 
-            // Check if the answer matches any correct answers and fill the blank
-            correctAnswers.forEach((answer, index) => {
-                if (userAnswer === answer && blanks[index].textContent === "_") {
-                    blanks[index].textContent = answer;
-                    filledCount++;
-                    found = true;
+            // Check if the user input matches the common answer
+            if (userAnswer === commonAnswer) {
+                blanks.forEach((blank) => {
+                    if (blank.textContent === "_") {
+                        blank.textContent = commonAnswer; // Fill all blanks with the common answer
+                        filledCount++;
+                    }
+                });
+
+                // If all slots are filled
+                if (filledCount === blanks.length) {
+                    document.getElementById("message").style.display = "block";
+                    document.getElementById("trainTimesButton").style.display = "block"; // Show the button to proceed
                 }
-            });
+            } else {
+                document.getElementById('errorMessage').textContent = 'Incorrect answer, please try again.';
+            }
 
             // Clear the input field
             document.getElementById("answerInput").value = "";
-
-            // If answer is incorrect
-            if (!found) {
-                document.getElementById('errorMessage').textContent = 'Incorrect answer, please try again.';
-                document.getElementById('errorMessage').style.display = 'block';
-            } else {
-                document.getElementById('errorMessage').style.display = 'none'; // Clear error on correct submission
-                submissionCount++;
-            }
-
-            // Rate limit handling
-            if (submissionCount >= RATE_LIMIT) {
-                rateLimited = true;
-                document.getElementById('rateLimitMessage').style.display = 'block';
-                setTimeout(() => {
-                    rateLimited = false;
-                    submissionCount = 0; // Reset submission count after timeout
-                    document.getElementById('rateLimitMessage').style.display = 'none';
-                }, TIMEOUT);
-            }
-
-            // Check if all slots are filled
-            if (filledCount === correctAnswers.length) {
-                // Show the "Click to See Train Times" button
-                document.getElementById("trainTimesButton").style.display = "block";
-
-                // Show the success message
-                document.getElementById("message").style.display = "block";
-            }
         }
 
         function showTrainTimes() {
