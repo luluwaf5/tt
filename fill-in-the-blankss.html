@@ -77,6 +77,14 @@
             text-align: center;
         }
 
+        #hintMessage {
+            font-size: 1.2rem;
+            color: orange;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+
         #continueButton {
             display: none;
             margin-top: 20px;
@@ -116,7 +124,7 @@
                 font-size: 0.9rem;
             }
 
-            #codeMessage {
+            #codeMessage, #hintMessage {
                 font-size: 1rem;
             }
         }
@@ -143,6 +151,7 @@
     
     <p id="errorMessage" style="color:red;"></p>
     <p id="codeMessage">Your Code: 1234</p>
+    <p id="hintMessage">⚠️ One of your tickets has been exposed to bots! Check Oxford Street for unauthorized data scraping. Your train to Oxford Street has now arrived.</p>
     <button id="continueButton" onclick="continueToNext()">Continue</button>
 
     <script>
@@ -172,6 +181,7 @@
 
             if (filledCount === correctAnswers.length) {
                 document.getElementById('codeMessage').style.display = 'block';
+                document.getElementById('hintMessage').style.display = 'block'; // Show the hint message
                 document.getElementById('continueButton').style.display = 'block';
             }
         }
@@ -183,3 +193,4 @@
 
 </body>
 </html>
+
