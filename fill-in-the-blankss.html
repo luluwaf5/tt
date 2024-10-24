@@ -3,153 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discover the stations </title>
+    <title>F5 Train Tracker - Train Schedule</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f4f8;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        h1 {
-            font-size: 2rem;
-            color: #333;
-        }
-
-        .blanks-container {
-            display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            height: 100vh;
         }
-
-        .blank {
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            font-size: 1.5em;
-            border: 2px solid #333;
+        .schedule-container {
             background-color: white;
-        }
-
-        input[type="text"] {
-            padding: 15px;
-            font-size: 1rem;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 300px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
+            max-width: 800px;
+            text-align: center;
         }
-
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 1.2rem;  /* Increase font size for visibility */
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007ACC;
+            color: white;
+        }
+        td {
+            background-color: #fff;
+        }
         button {
-            padding: 10px 20px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
             background-color: #007ACC;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
         }
-
         button:hover {
             background-color: #005a99;
         }
-
-        #codeMessage {
-            font-size: 1.5rem;
-            color: green;
-            margin-top: 20px;
-            display: none;
-        }
-
-        #continueButton {
-            display: none;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #007ACC;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        #continueButton:hover {
-            background-color: #005a99;
-        }
-
     </style>
 </head>
 <body>
 
-    <h1>Discover the stations </h1>
-
-    <div class="blanks-container">
-        <span class="blank" id="blank1">_</span>
-        <span class="blank" id="blank2">_</span>
-        <span class="blank" id="blank3">_</span>
-        <span class="blank" id="blank4">_</span>
-        <span class="blank" id="blank5">_</span>
-        <span class="blank" id="blank6">_</span>
-        <span class="blank" id="blank7">_</span>
-        <span class="blank" id="blank8">_</span>
+    <div class="schedule-container">
+        <h1>Train Schedule</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Train Number</th>
+                    <th>Route</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1001</td>
+                    <td>London Waterloo - Guilford</td>
+                    <td>08:30 AM</td>
+                    <td>10:45 AM</td>
+                    <td>Cancelled</td>
+                </tr>
+                <tr>
+                    <td>1002</td>
+                    <td>London - Birmingham</td>
+                    <td>09:00 AM</td>
+                    <td>10:15 AM</td>
+                    <td>Cancelled</td>
+                </tr>
+                <tr>
+                    <td>1003</td>
+                    <td>Manchester - Leeds</td>
+                    <td>09:15 AM</td>
+                    <td>10:30 AM</td>
+                    <td>Cancelled</td>
+                </tr>
+                <tr>
+                    <td>1004</td>
+                    <td>Birmingham - Bristol</td>
+                    <td>10:00 AM</td>
+                    <td>11:50 AM</td>
+                    <td>Cancelled</td>
+                </tr>
+                <tr>
+                    <td>1005</td>
+                    <td>Lecicester - Oxford Street </td>
+                    <td>11:00 AM</td>
+                    <td>01:30 PM</td>
+                    <td>On Time</td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="window.location.href='index.html'">Log Out</button>
     </div>
-
-    <input type="text" id="answerInput" placeholder="Enter your answer">
-    <button onclick="checkAnswer()">Submit</button>
-    
-    <p id="errorMessage" style="color:red;"></p>
-    <p id="codeMessage">Your Code: 1234</p>
-    <button id="continueButton" onclick="continueToNext()">Continue</button>
-
-    <script>
-        const correctAnswers = ["A", "B", "C", "D", "E", "F", "G", "H"];
-        let filledCount = 0;
-
-        function checkAnswer() {
-            const userAnswer = document.getElementById('answerInput').value.toUpperCase();
-            const blanks = document.getElementsByClassName('blank');
-            let answerFound = false;
-
-            // Clear error message
-            document.getElementById('errorMessage').textContent = '';
-
-            // Check if the answer matches and fill the next blank
-            correctAnswers.forEach((answer, index) => {
-                if (userAnswer === answer && blanks[index].textContent === "_") {
-                    blanks[index].textContent = answer;
-                    filledCount++;
-                    answerFound = true;
-                }
-            });
-
-            // Show error message if the answer is incorrect
-            if (!answerFound) {
-                document.getElementById('errorMessage').textContent = 'Incorrect answer please try again .';
-            }
-
-            // Clear input field after submission
-            document.getElementById('answerInput').value = "";
-
-            // Check if all blanks are filled
-            if (filledCount === correctAnswers.length) {
-                document.getElementById('codeMessage').style.display = 'block';
-                document.getElementById('continueButton').style.display = 'block';
-            }
-        }
-
-        function continueToNext() {
-            window.location.href = 'enter-code.html';  // Redirect to the Enter Code page
-        }
-    </script>
 
 </body>
 </html>
-
-
