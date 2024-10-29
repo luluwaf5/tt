@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -19,56 +18,48 @@
             font-size: 1.8rem;
             color: #333;
             text-align: center;
-            margin-bottom: 20px;
         }
 
         .slot-container {
             margin-bottom: 20px;
-            text-align: center;
             width: 100%;
             max-width: 600px;
+            text-align: center;
         }
 
         .slot-label {
             font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #007ACC;
+            margin-bottom: 5px;
         }
 
         .blanks-container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
             gap: 5px;
         }
 
         input[type="text"] {
             width: 100%;
-            max-width: 120px;
-            height: 40px;
+            max-width: 80px;
+            height: 35px;
             font-size: 1rem;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 5px;
-            box-sizing: border-box;
             text-transform: uppercase;
         }
 
         #submitAllButton {
             margin-top: 20px;
-            padding: 10px 20px;
+            padding: 10px;
             font-size: 1rem;
             background-color: #007ACC;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: inline-block;
-        }
-
-        #submitAllButton:hover {
-            background-color: #005a99;
         }
 
         #message, #errorMessage {
@@ -80,21 +71,6 @@
 
         #message { color: green; }
         #errorMessage { color: red; }
-
-        /* Mobile Styles */
-        @media (max-width: 600px) {
-            input[type="text"] {
-                width: 100%;
-                font-size: 1rem;
-                padding: 8px;
-            }
-
-            #submitAllButton {
-                width: 100%;
-                padding: 12px;
-                font-size: 1.1rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -102,7 +78,7 @@
     <h1>Allocate the correct tickets</h1>
 
     <div class="slot-container">
-        <span class="slot-label">Slot 1</span>
+        <span class="slot-label">Slot 1 </span>
         <div class="blanks-container">
             <input type="text" id="slot1-1" oninput="checkAnswer(1)">
             <input type="text" id="slot1-2" oninput="checkAnswer(1)">
@@ -124,7 +100,7 @@
     </div>
 
     <div class="slot-container">
-        <span class="slot-label">Slot 3 </span>
+        <span class="slot-label">Slot 3</span>
         <div class="blanks-container">
             <input type="text" id="slot3-1" oninput="checkAnswer(3)">
             <input type="text" id="slot3-2" oninput="checkAnswer(3)">
@@ -135,7 +111,7 @@
     </div>
 
     <div class="slot-container">
-        <span class="slot-label">Slot 4 </span>
+        <span class="slot-label">Slot 4</span>
         <div class="blanks-container">
             <input type="text" id="slot4-1" oninput="checkAnswer(4)">
             <input type="text" id="slot4-2" oninput="checkAnswer(4)">
@@ -148,7 +124,7 @@
     <button id="submitAllButton" onclick="submitAllAnswers()">Submit All</button>
 
     <p id="message">Congratulations! You've unlocked the train schedule.</p>
-    <p id="errorMessage"></p>
+    <p id="errorMessage">Incorrect entry! Please try again.</p>
 
     <script>
         const correctAnswers = [
@@ -173,6 +149,10 @@
                     correctCount++;
                 } else if (userAnswer && !rowCorrectAnswers.includes(userAnswer)) {
                     blank.value = ""; // Clear incorrect answer
+                    document.getElementById("errorMessage").style.display = "block"; // Show error message
+                    setTimeout(() => {
+                        document.getElementById("errorMessage").style.display = "none"; // Hide after 2 seconds
+                    }, 2000);
                 }
             });
 
