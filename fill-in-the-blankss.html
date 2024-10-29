@@ -96,14 +96,14 @@
     <h1>Discover the stations</h1>
 
     <div class="blanks-container">
-        <input class="blank" id="blank1" placeholder="_" readonly onclick="fillBlank(0)">
-        <input class="blank" id="blank2" placeholder="_" readonly onclick="fillBlank(1)">
-        <input class="blank" id="blank3" placeholder="_" readonly onclick="fillBlank(2)">
-        <input class="blank" id="blank4" placeholder="_" readonly onclick="fillBlank(3)">
-        <input class="blank" id="blank5" placeholder="_" readonly onclick="fillBlank(4)">
-        <input class="blank" id="blank6" placeholder="_" readonly onclick="fillBlank(5)">
-        <input class="blank" id="blank7" placeholder="_" readonly onclick="fillBlank(6)">
-        <input class="blank" id="blank8" placeholder="_" readonly onclick="fillBlank(7)">
+        <input class="blank" id="blank1" placeholder="_" onclick="fillBlank(0)">
+        <input class="blank" id="blank2" placeholder="_" onclick="fillBlank(1)">
+        <input class="blank" id="blank3" placeholder="_" onclick="fillBlank(2)">
+        <input class="blank" id="blank4" placeholder="_" onclick="fillBlank(3)">
+        <input class="blank" id="blank5" placeholder="_" onclick="fillBlank(4)">
+        <input class="blank" id="blank6" placeholder="_" onclick="fillBlank(5)">
+        <input class="blank" id="blank7" placeholder="_" onclick="fillBlank(6)">
+        <input class="blank" id="blank8" placeholder="_" onclick="fillBlank(7)">
     </div>
 
     <input type="text" id="answerInput" placeholder="Enter your answer or type 'all' to auto-fill">
@@ -129,11 +129,10 @@
             
             document.getElementById('errorMessage').textContent = '';
 
+            // Auto-fill all blanks if "all" is entered
             if (userAnswer === "all") {
                 correctAnswers.forEach((answer, index) => {
-                    if (blanks[index].value === "_") { // Only fill unfilled blanks
-                        blanks[index].value = answer;
-                    }
+                    blanks[index].value = answer;
                 });
                 filledCount = correctAnswers.length;
                 document.getElementById('codeMessage').style.display = 'block';
@@ -141,9 +140,9 @@
                 return;
             }
 
-            if (selectedBlankIndex !== null && userAnswer === correctAnswers[selectedBlankIndex].toLowerCase() && blanks[selectedBlankIndex].value === "_") {
+            // Fill selected blank with individual answer if it matches
+            if (selectedBlankIndex !== null && userAnswer === correctAnswers[selectedBlankIndex].toLowerCase()) {
                 blanks[selectedBlankIndex].value = userAnswer;
-                blanks[selectedBlankIndex].readOnly = true;
                 filledCount++;
                 selectedBlankIndex = null;
             } else {
@@ -152,6 +151,7 @@
 
             document.getElementById('answerInput').value = "";
 
+            // Check if all blanks are filled
             if (filledCount === correctAnswers.length) {
                 document.getElementById('codeMessage').style.display = 'block';
                 document.getElementById('continueButton').style.display = 'block';
