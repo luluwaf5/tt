@@ -96,14 +96,14 @@
     <h1>Discover the stations</h1>
 
     <div class="blanks-container">
-        <input class="blank" id="blank1" placeholder="_" onclick="fillBlank(0)">
-        <input class="blank" id="blank2" placeholder="_" onclick="fillBlank(1)">
-        <input class="blank" id="blank3" placeholder="_" onclick="fillBlank(2)">
-        <input class="blank" id="blank4" placeholder="_" onclick="fillBlank(3)">
-        <input class="blank" id="blank5" placeholder="_" onclick="fillBlank(4)">
-        <input class="blank" id="blank6" placeholder="_" onclick="fillBlank(5)">
-        <input class="blank" id="blank7" placeholder="_" onclick="fillBlank(6)">
-        <input class="blank" id="blank8" placeholder="_" onclick="fillBlank(7)">
+        <input class="blank" id="blank1" placeholder="_" onclick="fillBlank(this)">
+        <input class="blank" id="blank2" placeholder="_" onclick="fillBlank(this)">
+        <input class="blank" id="blank3" placeholder="_" onclick="fillBlank(this)">
+        <input class="blank" id="blank4" placeholder="_" onclick="fillBlank(this)">
+        <input class="blank" id="blank5" placeholder="_" onclick="fillBlank(this)">
+        <input class="blank" id="blank6" placeholder="_" onclick="fillBlank(this)">
+        <input class="blank" id="blank7" placeholder="_" onclick="fillBlank(this)">
+        <input class="blank" id="blank8" placeholder="_" onclick="fillBlank(this)">
     </div>
 
     <input type="text" id="answerInput" placeholder="Enter your answer or type 'all' to auto-fill">
@@ -115,46 +115,49 @@
 
     <script>
         const correctAnswers = ["google", "facebook", "lyft", "viator", "tripadvisor", "uber", "payment", "user"];
-        let filledCount = 0;
-        let selectedBlankIndex = null;
+        let filledAnswers = []; // Track filled answers to avoid duplicates
+        let selectedBlank = null;
 
-        function fillBlank(index) {
-            selectedBlankIndex = index;
+        function fillBlank(blank) {
+            selectedBlank = blank; // Set the selected blank input
             document.getElementById('answerInput').focus();
         }
 
         function submitAnswer() {
             const userAnswer = document.getElementById('answerInput').value.toLowerCase().trim();
             const blanks = document.getElementsByClassName('blank');
-            
+
             document.getElementById('errorMessage').textContent = '';
 
             // Auto-fill all blanks if "all" is entered
             if (userAnswer === "all") {
                 correctAnswers.forEach((answer, index) => {
-                    blanks[index].value = answer;
-                    blanks[index].disabled = true;  // Prevent further editing
+                    if (!filledAnswers.includes(answer)) { // Only fill unfilled answers
+                        blanks[index].value = answer;
+                        filledAnswers.push(answer);
+                    }
                 });
-                filledCount = correctAnswers.length;
+                selectedBlank = null; // Clear selection
                 document.getElementById('codeMessage').style.display = 'block';
                 document.getElementById('continueButton').style.display = 'block';
                 return;
             }
 
-            // Validate and place individual answers
-            if (selectedBlankIndex !== null && userAnswer === correctAnswers[selectedBlankIndex]) {
-                blanks[selectedBlankIndex].value = userAnswer;
-                blanks[selectedBlankIndex].disabled = true; // Prevent further editing on that blank
-                filledCount++;
-                selectedBlankIndex = null;
+            // Check if the answer is correct and not already entered
+            if (correctAnswers.includes(userAnswer) && !filledAnswers.includes(userAnswer)) {
+                if (selectedBlank) {
+                    selectedBlank.value = userAnswer;
+                    filledAnswers.push(userAnswer); // Mark this answer as filled
+                    selectedBlank = null;
+                }
             } else {
-                document.getElementById('errorMessage').textContent = 'Incorrect answer, please try again.';
+                document.getElementById('errorMessage').textContent = 'Incorrect answer or already entered, please try again.';
             }
 
             document.getElementById('answerInput').value = "";
 
-            // Check if all blanks are filled
-            if (filledCount === correctAnswers.length) {
+            // Show code message if all answers are filled
+            if (filledAnswers.length === correctAnswers.length) {
                 document.getElementById('codeMessage').style.display = 'block';
                 document.getElementById('continueButton').style.display = 'block';
             }
