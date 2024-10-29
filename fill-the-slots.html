@@ -64,20 +64,6 @@
             text-transform: uppercase;
         }
 
-        button {
-            padding: 8px 15px;
-            background-color: #007ACC;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        button:hover {
-            background-color: #005a99;
-        }
-
         #message, #errorMessage {
             font-size: 1.2em;
             margin-top: 10px;
@@ -113,12 +99,11 @@
     <div class="slot-container">
         <span class="slot-label">South Western Railway</span>
         <div class="blanks-container">
-            <input type="text" class="blank" id="slot1-1">
-            <input type="text" class="blank" id="slot1-2">
-            <input type="text" class="blank" id="slot1-3">
-            <input type="text" class="blank" id="slot1-4">
-            <input type="text" class="blank" id="slot1-5">
-            <button onclick="submitRow(1)">Submit</button>
+            <input type="text" class="blank" id="slot1-1" oninput="checkAnswer(1)">
+            <input type="text" class="blank" id="slot1-2" oninput="checkAnswer(1)">
+            <input type="text" class="blank" id="slot1-3" oninput="checkAnswer(1)">
+            <input type="text" class="blank" id="slot1-4" oninput="checkAnswer(1)">
+            <input type="text" class="blank" id="slot1-5" oninput="checkAnswer(1)">
         </div>
     </div>
 
@@ -126,12 +111,11 @@
     <div class="slot-container">
         <span class="slot-label">West Midlands Railway</span>
         <div class="blanks-container">
-            <input type="text" class="blank" id="slot2-1">
-            <input type="text" class="blank" id="slot2-2">
-            <input type="text" class="blank" id="slot2-3">
-            <input type="text" class="blank" id="slot2-4">
-            <input type="text" class="blank" id="slot2-5">
-            <button onclick="submitRow(2)">Submit</button>
+            <input type="text" class="blank" id="slot2-1" oninput="checkAnswer(2)">
+            <input type="text" class="blank" id="slot2-2" oninput="checkAnswer(2)">
+            <input type="text" class="blank" id="slot2-3" oninput="checkAnswer(2)">
+            <input type="text" class="blank" id="slot2-4" oninput="checkAnswer(2)">
+            <input type="text" class="blank" id="slot2-5" oninput="checkAnswer(2)">
         </div>
     </div>
 
@@ -139,12 +123,11 @@
     <div class="slot-container">
         <span class="slot-label">Northern Railway</span>
         <div class="blanks-container">
-            <input type="text" class="blank" id="slot3-1">
-            <input type="text" class="blank" id="slot3-2">
-            <input type="text" class="blank" id="slot3-3">
-            <input type="text" class="blank" id="slot3-4">
-            <input type="text" class="blank" id="slot3-5">
-            <button onclick="submitRow(3)">Submit</button>
+            <input type="text" class="blank" id="slot3-1" oninput="checkAnswer(3)">
+            <input type="text" class="blank" id="slot3-2" oninput="checkAnswer(3)">
+            <input type="text" class="blank" id="slot3-3" oninput="checkAnswer(3)">
+            <input type="text" class="blank" id="slot3-4" oninput="checkAnswer(3)">
+            <input type="text" class="blank" id="slot3-5" oninput="checkAnswer(3)">
         </div>
     </div>
 
@@ -152,12 +135,11 @@
     <div class="slot-container">
         <span class="slot-label">South Eastern Railway</span>
         <div class="blanks-container">
-            <input type="text" class="blank" id="slot4-1">
-            <input type="text" class="blank" id="slot4-2">
-            <input type="text" class="blank" id="slot4-3">
-            <input type="text" class="blank" id="slot4-4">
-            <input type="text" class="blank" id="slot4-5">
-            <button onclick="submitRow(4)">Submit</button>
+            <input type="text" class="blank" id="slot4-1" oninput="checkAnswer(4)">
+            <input type="text" class="blank" id="slot4-2" oninput="checkAnswer(4)">
+            <input type="text" class="blank" id="slot4-3" oninput="checkAnswer(4)">
+            <input type="text" class="blank" id="slot4-4" oninput="checkAnswer(4)">
+            <input type="text" class="blank" id="slot4-5" oninput="checkAnswer(4)">
         </div>
     </div>
 
@@ -177,18 +159,17 @@
         const RATE_LIMIT = 5;
         let allFilled = [false, false, false, false]; // Track if each row is correctly filled
 
-        function submitRow(rowIndex) {
+        function checkAnswer(rowIndex) {
             const rowCorrectAnswers = correctAnswers[rowIndex - 1];
             const blanks = Array.from(document.querySelectorAll(`#slot${rowIndex}-1, #slot${rowIndex}-2, #slot${rowIndex}-3, #slot${rowIndex}-4, #slot${rowIndex}-5`));
             let correctCount = 0;
 
-            // Check each blank in the row
             blanks.forEach((blank, index) => {
                 const userAnswer = blank.value.toUpperCase().trim();
                 if (rowCorrectAnswers.includes(userAnswer)) {
                     blank.disabled = true;
                     correctCount++;
-                } else {
+                } else if (userAnswer) {
                     blank.value = ""; // Clear incorrect answer
                 }
             });
@@ -206,7 +187,6 @@
                 // Disable inputs in the row for 5 seconds
                 blanks.forEach(blank => blank.disabled = true);
                 setTimeout(() => {
-                    // Re-enable inputs after 5 seconds if the row is not fully correct
                     if (!allFilled[rowIndex - 1]) {
                         blanks.forEach(blank => blank.disabled = false);
                     }
@@ -235,4 +215,3 @@
 
 </body>
 </html>
-
