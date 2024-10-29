@@ -29,32 +29,35 @@
 
         .slot-label {
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: #007ACC;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .blanks-container {
             display: flex;
             justify-content: center;
-            gap: 5px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         input[type="text"] {
             width: 100%;
-            max-width: 80px;
-            height: 35px;
-            font-size: 1rem;
+            max-width: 150px;
+            height: 45px;
+            font-size: 1.1rem;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 2px solid #ddd;
             border-radius: 5px;
             text-transform: uppercase;
+            padding: 8px;
+            box-sizing: border-box;
         }
 
         #submitAllButton {
             margin-top: 20px;
-            padding: 10px;
-            font-size: 1rem;
+            padding: 12px 20px;
+            font-size: 1.1rem;
             background-color: #007ACC;
             color: white;
             border: none;
@@ -71,6 +74,21 @@
 
         #message { color: green; }
         #errorMessage { color: red; }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 600px) {
+            input[type="text"] {
+                max-width: 100%;
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+            #submitAllButton {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -133,10 +151,10 @@
             ["DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER"],
             ["ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"]
         ];
-        let allFilled = [false, false, false, false]; // Track if each row is completed
+        let allFilled = [false, false, false, false];
 
         function checkAnswer(rowIndex) {
-            const rowCorrectAnswers = [...correctAnswers[rowIndex - 1]]; // Copy correct answers for each row
+            const rowCorrectAnswers = [...correctAnswers[rowIndex - 1]];
             const blanks = Array.from(document.querySelectorAll(`#slot${rowIndex}-1, #slot${rowIndex}-2, #slot${rowIndex}-3, #slot${rowIndex}-4, #slot${rowIndex}-5`));
             let correctCount = 0;
 
@@ -145,7 +163,7 @@
                 const answerIndex = rowCorrectAnswers.indexOf(userAnswer);
 
                 if (answerIndex !== -1) {
-                    rowCorrectAnswers.splice(answerIndex, 1); // Remove matched answer
+                    rowCorrectAnswers.splice(answerIndex, 1);
                     blank.style.backgroundColor = "#d4edda"; // Green background for correct answers
                     blank.disabled = true;
                     correctCount++;
