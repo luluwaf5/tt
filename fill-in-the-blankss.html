@@ -29,15 +29,16 @@
         }
 
         .blank {
-            width: 80px; /* Reduced width for mobile */
+            width: 120px; /* Increased width for longer words */
             height: 50px;
             text-align: center;
-            font-size: 1.1em;
+            font-size: 1rem; /* Adjusted font size */
             border: 2px solid #333;
             background-color: white;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
 
         input[type="text"] {
@@ -95,18 +96,18 @@
     <h1>Discover the stations</h1>
 
     <div class="blanks-container">
-        <span class="blank" id="blank1">_</span>
-        <span class="blank" id="blank2">_</span>
-        <span class="blank" id="blank3">_</span>
-        <span class="blank" id="blank4">_</span>
-        <span class="blank" id="blank5">_</span>
-        <span class="blank" id="blank6">_</span>
-        <span class="blank" id="blank7">_</span>
-        <span class="blank" id="blank8">_</span>
+        <input class="blank" id="blank1" placeholder="_" readonly onclick="fillBlank(0)">
+        <input class="blank" id="blank2" placeholder="_" readonly onclick="fillBlank(1)">
+        <input class="blank" id="blank3" placeholder="_" readonly onclick="fillBlank(2)">
+        <input class="blank" id="blank4" placeholder="_" readonly onclick="fillBlank(3)">
+        <input class="blank" id="blank5" placeholder="_" readonly onclick="fillBlank(4)">
+        <input class="blank" id="blank6" placeholder="_" readonly onclick="fillBlank(5)">
+        <input class="blank" id="blank7" placeholder="_" readonly onclick="fillBlank(6)">
+        <input class="blank" id="blank8" placeholder="_" readonly onclick="fillBlank(7)">
     </div>
 
-    <input type="text" id="answerInput" placeholder="Enter your answer or type 'all' to auto-fill">
-    <button onclick="checkAnswer()">Submit</button>
+    <input type="text" id="answerInput" placeholder="Enter your answer">
+    <button onclick="submitAnswer()">Submit</button>
     
     <p id="errorMessage" style="color:red;"></p>
     <p id="codeMessage">Your Code: 1234</p>
@@ -115,17 +116,23 @@
     <script>
         const correctAnswers = ["google", "facebook", "lyft", "viator", "tripadvisor", "uber", "payment", "user"];
         let filledCount = 0;
+        let selectedBlankIndex = null;
 
-        function checkAnswer() {
-            const userAnswer = document.getElementById('answerInput').value.toLowerCase();  
+        function fillBlank(index) {
+            selectedBlankIndex = index;
+            document.getElementById('answerInput').focus();
+        }
+
+        function submitAnswer() {
+            const userAnswer = document.getElementById('answerInput').value.toLowerCase();
             const blanks = document.getElementsByClassName('blank');
-            let answerFound = false;
-
+            
             document.getElementById('errorMessage').textContent = '';
 
             if (userAnswer === "all") {
                 correctAnswers.forEach((answer, index) => {
-                    blanks[index].textContent = answer;
+                    blanks[index].value = answer;
+                    blanks[index].readOnly = true;
                 });
                 filledCount = correctAnswers.length;
                 document.getElementById('codeMessage').style.display = 'block';
@@ -133,15 +140,12 @@
                 return;
             }
 
-            correctAnswers.forEach((answer, index) => {
-                if (userAnswer === answer.toLowerCase() && blanks[index].textContent === "_") {  
-                    blanks[index].textContent = answer;
-                    filledCount++;
-                    answerFound = true;
-                }
-            });
-
-            if (!answerFound) {
+            if (selectedBlankIndex !== null && userAnswer === correctAnswers[selectedBlankIndex].toLowerCase() && blanks[selectedBlankIndex].value === "_") {
+                blanks[selectedBlankIndex].value = userAnswer;
+                blanks[selectedBlankIndex].readOnly = true;
+                filledCount++;
+                selectedBlankIndex = null;
+            } else {
                 document.getElementById('errorMessage').textContent = 'Incorrect answer, please try again.';
             }
 
