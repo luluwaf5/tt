@@ -42,24 +42,21 @@
         }
 
         .blank {
-            width: 150px; /* Increased width */
-            height: 50px; /* Increased height */
+            width: 150px;
+            height: 50px;
             text-align: center;
-            font-size: 1.1rem; /* Slightly larger font */
+            font-size: 1.1rem;
             border: 2px solid #333;
             background-color: white;
             box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 5px;
         }
 
         input[type="text"] {
             padding: 10px;
             font-size: 1rem;
-            width: 140px; /* Larger width */
-            height: 40px; /* Larger height */
+            width: 140px;
+            height: 40px;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -83,7 +80,7 @@
             background-color: #005a99;
         }
 
-        #message, #errorMessage, #rateLimitMessage {
+        #message, #errorMessage {
             font-size: 1.2em;
             margin-top: 10px;
             display: none;
@@ -91,7 +88,6 @@
 
         #message { color: green; }
         #errorMessage { color: red; }
-        #rateLimitMessage { color: red; }
 
         #trainTimesButton {
             margin-top: 20px;
@@ -163,7 +159,6 @@
 
     <p id="message">Congratulations! You've unlocked the train schedule.</p>
     <p id="errorMessage"></p>
-    <p id="rateLimitMessage">Rate limit exceeded! Please wait before submitting again.</p>
 
     <button id="trainTimesButton" onclick="showTrainTimes()">Click to See Train Times</button>
 
@@ -190,13 +185,13 @@
             const blanks = document.getElementsByClassName('blank');
             let allCorrect = true;
 
-            Array.from(blanks).forEach((blank, index) => {
+            Array.from(blanks).forEach(blank => {
                 const userAnswer = blank.value.toUpperCase().trim();
 
                 if (correctAnswers.includes(userAnswer) && blank.value !== "") {
-                    blank.disabled = true;
+                    blank.disabled = true; // Disable field on correct answer
                     filledCount++;
-                } else if (userAnswer !== "") {
+                } else if (userAnswer !== "" && !correctAnswers.includes(userAnswer)) {
                     blank.value = ""; // Clear incorrect answer
                     allCorrect = false;
                 }
@@ -209,11 +204,10 @@
             submissionCount++;
             if (submissionCount >= RATE_LIMIT) {
                 rateLimited = true;
-                document.getElementById('rateLimitMessage').style.display = 'block';
+                alert("Rate limit exceeded! Please wait before submitting again.");
                 setTimeout(() => {
                     rateLimited = false;
                     submissionCount = 0;
-                    document.getElementById('rateLimitMessage').style.display = 'none';
                 }, TIMEOUT);
             }
 
