@@ -35,32 +35,36 @@
 
         .blanks-container {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
             margin-bottom: 10px;
         }
 
         .blank {
-            width: 120px;
+            width: 100px;
             height: 40px;
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1rem;
             border: 2px solid #333;
             background-color: white;
+            box-sizing: border-box;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 5px;
         }
 
         input[type="text"] {
-            padding: 15px;
+            padding: 10px;
             font-size: 1rem;
-            width: 100%;
-            max-width: 300px;
-            margin-bottom: 20px;
+            width: 90px;
+            text-align: center;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         button {
@@ -71,39 +75,22 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
+            margin-top: 20px;
         }
 
         button:hover {
             background-color: #005a99;
         }
 
-        #message {
-            font-size: 1.5em;
-            color: green;
-            margin-top: 20px;
-            display: none;
-        }
-
-        #hintMessage {
-            font-size: 1.5em;
-            color: orange;
-            margin-top: 20px;
-            display: none;
-        }
-
-        #errorMessage {
-            color: red;
-            font-size: 1.2rem;
+        #message, #hintMessage, #errorMessage, #rateLimitMessage {
+            font-size: 1.2em;
             margin-top: 10px;
             display: none;
         }
 
-        #rateLimitMessage {
-            color: red;
-            font-size: 1.2rem;
-            margin-top: 10px;
-            display: none;
-        }
+        #message { color: green; }
+        #hintMessage { color: orange; }
+        #errorMessage, #rateLimitMessage { color: red; }
 
         #trainTimesButton {
             margin-top: 20px;
@@ -114,7 +101,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            display: none; /* Initially hidden */
+            display: none;
         }
 
         #trainTimesButton:hover {
@@ -127,134 +114,114 @@
 
     <h1>Allocate the correct tickets</h1>
 
-    <!-- Slot 1 -->
     <div class="slot-container">
-        <span class="slot-label">South Western Railway </span>
+        <span class="slot-label">South Western Railway</span>
         <div class="blanks-container">
-            <span class="blank" id="slot1-1">_</span>
-            <span class="blank" id="slot1-2">_</span>
-            <span class="blank" id="slot1-3">_</span>
-            <span class="blank" id="slot1-4">_</span>
-            <span class="blank" id="slot1-5">_</span>
+            <input type="text" class="blank" id="slot1-1">
+            <input type="text" class="blank" id="slot1-2">
+            <input type="text" class="blank" id="slot1-3">
+            <input type="text" class="blank" id="slot1-4">
+            <input type="text" class="blank" id="slot1-5">
         </div>
     </div>
 
-    <!-- Slot 2 -->
     <div class="slot-container">
-        <span class="slot-label">West Midlands Railway </span>
+        <span class="slot-label">West Midlands Railway</span>
         <div class="blanks-container">
-            <span class="blank" id="slot2-1">_</span>
-            <span class="blank" id="slot2-2">_</span>
-            <span class="blank" id="slot2-3">_</span>
-            <span class="blank" id="slot2-4">_</span>
-            <span class="blank" id="slot2-5">_</span>
+            <input type="text" class="blank" id="slot2-1">
+            <input type="text" class="blank" id="slot2-2">
+            <input type="text" class="blank" id="slot2-3">
+            <input type="text" class="blank" id="slot2-4">
+            <input type="text" class="blank" id="slot2-5">
         </div>
     </div>
 
-    <!-- Slot 3 -->
     <div class="slot-container">
-        <span class="slot-label">Northern Railway </span>
+        <span class="slot-label">Northern Railway</span>
         <div class="blanks-container">
-            <span class="blank" id="slot3-1">_</span>
-            <span class="blank" id="slot3-2">_</span>
-            <span class="blank" id="slot3-3">_</span>
-            <span class="blank" id="slot3-4">_</span>
-            <span class="blank" id="slot3-5">_</span>
+            <input type="text" class="blank" id="slot3-1">
+            <input type="text" class="blank" id="slot3-2">
+            <input type="text" class="blank" id="slot3-3">
+            <input type="text" class="blank" id="slot3-4">
+            <input type="text" class="blank" id="slot3-5">
         </div>
     </div>
 
-    <!-- Slot 4 -->
     <div class="slot-container">
-        <span class="slot-label">South Eastern Railway </span>
+        <span class="slot-label">South Eastern Railway</span>
         <div class="blanks-container">
-            <span class="blank" id="slot4-1">_</span>
-            <span class="blank" id="slot4-2">_</span>
-            <span class="blank" id="slot4-3">_</span>
-            <span class="blank" id="slot4-4">_</span>
-            <span class="blank" id="slot4-5">_</span>
+            <input type="text" class="blank" id="slot4-1">
+            <input type="text" class="blank" id="slot4-2">
+            <input type="text" class="blank" id="slot4-3">
+            <input type="text" class="blank" id="slot4-4">
+            <input type="text" class="blank" id="slot4-5">
         </div>
     </div>
 
-    <input type="text" id="answerInput" placeholder="Enter your answer">
-    <button onclick="checkAnswer()">Submit</button>
+    <button onclick="submitAllAnswers()">Submit All</button>
 
-    <div id="message">Congratulations! You've unlocked the train schedule.</div>
-    <div id="hintMessage">⚠️ One of your tickets has been exposed to bots! Check Oxford Street for unauthorized data scraping. Use this clue in the next task.</div>
+    <p id="message">Congratulations! You've unlocked the train schedule.</p>
     <p id="errorMessage"></p>
     <p id="rateLimitMessage">Rate limit exceeded! Please wait before submitting again.</p>
 
-    <!-- Button to show train times, initially hidden -->
     <button id="trainTimesButton" onclick="showTrainTimes()">Click to See Train Times</button>
 
     <script>
         const correctAnswers = [
-            "PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES",  // Slot 1 answers
-            "LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA",    // Slot 2 answers
-            "DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER",     // Slot 3 answers
-            "ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"        // Slot 4 answers
+            "PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES",
+            "LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA",
+            "DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER",
+            "ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"
         ];
-
         let filledCount = 0;
         let submissionCount = 0;
-        const RATE_LIMIT = 5; // Allow only 5 submissions
-        const TIMEOUT = 5000; // 5 seconds delay between submissions
-        let rateLimited = false; // Track if rate limit is active
+        const RATE_LIMIT = 5;
+        const TIMEOUT = 5000;
+        let rateLimited = false;
 
-        function checkAnswer() {
+        function submitAllAnswers() {
             if (rateLimited) {
-                document.getElementById('rateLimitMessage').style.display = 'block';
+                alert("Rate limit exceeded! Please wait before submitting again.");
                 return;
             }
 
-            const userAnswer = document.getElementById("answerInput").value.toUpperCase();
-            const blanks = document.querySelectorAll(".blank");
-            let found = false;
+            document.getElementById('errorMessage').textContent = '';
+            const blanks = document.getElementsByClassName('blank');
+            let allCorrect = true;
 
-            // Check if the answer matches any correct answers and fill the blank
-            correctAnswers.forEach((answer, index) => {
-                if (userAnswer === answer && blanks[index].textContent === "_") {
-                    blanks[index].textContent = answer;
+            Array.from(blanks).forEach((blank, index) => {
+                const userAnswer = blank.value.toUpperCase().trim();
+
+                if (correctAnswers.includes(userAnswer) && blank.value !== "") {
+                    blank.disabled = true;
                     filledCount++;
-                    found = true;
+                } else if (userAnswer !== "") {
+                    blank.value = ""; // Clear incorrect answer
+                    allCorrect = false;
                 }
             });
 
-            // Clear the input field
-            document.getElementById("answerInput").value = "";
-
-            // If answer is incorrect
-            if (!found) {
-                document.getElementById('errorMessage').textContent = 'Incorrect answer, please try again.';
-                document.getElementById('errorMessage').style.display = 'block';
-            } else {
-                document.getElementById('errorMessage').style.display = 'none'; // Clear error on correct submission
-                submissionCount++;
+            if (!allCorrect) {
+                document.getElementById('errorMessage').textContent = 'Some answers were incorrect. Please try again.';
             }
 
-            // Rate limit handling
+            submissionCount++;
             if (submissionCount >= RATE_LIMIT) {
                 rateLimited = true;
-                document.getElementById('rateLimitMessage').style.display = 'block';
                 setTimeout(() => {
                     rateLimited = false;
-                    submissionCount = 0; // Reset submission count after timeout
-                    document.getElementById('rateLimitMessage').style.display = 'none';
+                    submissionCount = 0;
                 }, TIMEOUT);
             }
 
-            // Check if all slots are filled
             if (filledCount === correctAnswers.length) {
-                // Show the "Click to See Train Times" button
-                document.getElementById("trainTimesButton").style.display = "block";
-
-                // Show the success message
                 document.getElementById("message").style.display = "block";
+                document.getElementById("trainTimesButton").style.display = "block";
             }
         }
 
         function showTrainTimes() {
-            // Redirect or display train times
-            window.location.href = 'train-schedule.html';  // You can update the link as necessary
+            window.location.href = 'train-schedule.html';
         }
     </script>
 
