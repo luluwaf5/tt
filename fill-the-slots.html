@@ -35,8 +35,7 @@
 
         .blanks-container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            align-items: center;
             gap: 10px;
             margin-bottom: 10px;
         }
@@ -66,14 +65,13 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 8px 15px;
             background-color: #007ACC;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
-            margin-top: 20px;
+            font-size: 0.9rem;
         }
 
         button:hover {
@@ -89,7 +87,7 @@
         #message { color: green; }
         #errorMessage { color: red; }
 
-        #trainTimesButton {
+        #submitAllButton {
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 1rem;
@@ -98,10 +96,10 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            display: none;
+            display: inline-block;
         }
 
-        #trainTimesButton:hover {
+        #submitAllButton:hover {
             background-color: #005a99;
         }
 
@@ -111,6 +109,7 @@
 
     <h1>Allocate the correct tickets</h1>
 
+    <!-- Row 1 -->
     <div class="slot-container">
         <span class="slot-label">South Western Railway</span>
         <div class="blanks-container">
@@ -119,9 +118,11 @@
             <input type="text" class="blank" id="slot1-3">
             <input type="text" class="blank" id="slot1-4">
             <input type="text" class="blank" id="slot1-5">
+            <button onclick="submitRow(1)">Submit</button>
         </div>
     </div>
 
+    <!-- Row 2 -->
     <div class="slot-container">
         <span class="slot-label">West Midlands Railway</span>
         <div class="blanks-container">
@@ -130,9 +131,11 @@
             <input type="text" class="blank" id="slot2-3">
             <input type="text" class="blank" id="slot2-4">
             <input type="text" class="blank" id="slot2-5">
+            <button onclick="submitRow(2)">Submit</button>
         </div>
     </div>
 
+    <!-- Row 3 -->
     <div class="slot-container">
         <span class="slot-label">Northern Railway</span>
         <div class="blanks-container">
@@ -141,9 +144,11 @@
             <input type="text" class="blank" id="slot3-3">
             <input type="text" class="blank" id="slot3-4">
             <input type="text" class="blank" id="slot3-5">
+            <button onclick="submitRow(3)">Submit</button>
         </div>
     </div>
 
+    <!-- Row 4 -->
     <div class="slot-container">
         <span class="slot-label">South Eastern Railway</span>
         <div class="blanks-container">
@@ -152,73 +157,66 @@
             <input type="text" class="blank" id="slot4-3">
             <input type="text" class="blank" id="slot4-4">
             <input type="text" class="blank" id="slot4-5">
+            <button onclick="submitRow(4)">Submit</button>
         </div>
     </div>
 
-    <button onclick="submitAllAnswers()">Submit All</button>
+    <button id="submitAllButton" onclick="submitAllAnswers()">Submit All</button>
 
     <p id="message">Congratulations! You've unlocked the train schedule.</p>
     <p id="errorMessage"></p>
 
-    <button id="trainTimesButton" onclick="showTrainTimes()">Click to See Train Times</button>
-
     <script>
         const correctAnswers = [
-            "PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES",
-            "LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA",
-            "DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER",
-            "ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"
+            ["PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES"],      // Row 1
+            ["LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA"],        // Row 2
+            ["DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER"],         // Row 3
+            ["ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"]            // Row 4
         ];
-        let filledCount = 0;
-        let submissionCount = 0;
+        const rowAttempts = [0, 0, 0, 0]; // Track attempts per row
         const RATE_LIMIT = 5;
-        const TIMEOUT = 5000;
-        let rateLimited = false;
+        let allFilled = [false, false, false, false]; // Track if each row is correctly filled
 
-        function submitAllAnswers() {
-            if (rateLimited) {
-                alert("Rate limit exceeded! Please wait before submitting again.");
-                return;
-            }
+        function submitRow(rowIndex) {
+            const rowCorrectAnswers = correctAnswers[rowIndex - 1];
+            const blanks = Array.from(document.querySelectorAll(`#slot${rowIndex}-1, #slot${rowIndex}-2, #slot${rowIndex}-3, #slot${rowIndex}-4, #slot${rowIndex}-5`));
+            let correctCount = 0;
 
-            document.getElementById('errorMessage').textContent = '';
-            const blanks = document.getElementsByClassName('blank');
-            let allCorrect = true;
-
-            Array.from(blanks).forEach(blank => {
+            blanks.forEach((blank, index) => {
                 const userAnswer = blank.value.toUpperCase().trim();
-
-                if (correctAnswers.includes(userAnswer) && blank.value !== "") {
-                    blank.disabled = true; // Disable field on correct answer
-                    filledCount++;
-                } else if (userAnswer !== "" && !correctAnswers.includes(userAnswer)) {
+                if (rowCorrectAnswers.includes(userAnswer)) {
+                    blank.disabled = true;
+                    correctCount++;
+                } else {
                     blank.value = ""; // Clear incorrect answer
-                    allCorrect = false;
                 }
             });
 
-            if (!allCorrect) {
-                document.getElementById('errorMessage').textContent = 'Some answers were incorrect. Please try again.';
+            if (correctCount === 5) {
+                allFilled[rowIndex - 1] = true;
+            } else {
+                rowAttempts[rowIndex - 1]++;
+                if (rowAttempts[rowIndex - 1] >= RATE_LIMIT) {
+                    alert("Rate limit exceeded! Please wait before trying again.");
+                }
             }
 
-            submissionCount++;
-            if (submissionCount >= RATE_LIMIT) {
-                rateLimited = true;
-                alert("Rate limit exceeded! Please wait before submitting again.");
-                setTimeout(() => {
-                    rateLimited = false;
-                    submissionCount = 0;
-                }, TIMEOUT);
-            }
+            checkCompletion();
+        }
 
-            if (filledCount === correctAnswers.length) {
-                document.getElementById("message").style.display = "block";
-                document.getElementById("trainTimesButton").style.display = "block";
+        function submitAllAnswers() {
+            if (allFilled.every(Boolean)) {
+                window.location.href = 'train-schedule.html'; // Redirect to next page
+            } else {
+                document.getElementById("errorMessage").textContent = 'Please complete all rows correctly before proceeding.';
+                document.getElementById("errorMessage").style.display = 'block';
             }
         }
 
-        function showTrainTimes() {
-            window.location.href = 'train-schedule.html';
+        function checkCompletion() {
+            if (allFilled.every(Boolean)) {
+                document.getElementById("message").style.display = "block";
+            }
         }
     </script>
 
