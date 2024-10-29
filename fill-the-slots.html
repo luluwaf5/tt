@@ -78,7 +78,7 @@
     <h1>Allocate the correct tickets</h1>
 
     <div class="slot-container">
-        <span class="slot-label">Slot 1 </span>
+        <span class="slot-label">South Western Railway</span>
         <div class="blanks-container">
             <input type="text" id="slot1-1" oninput="checkAnswer(1)">
             <input type="text" id="slot1-2" oninput="checkAnswer(1)">
@@ -89,7 +89,7 @@
     </div>
 
     <div class="slot-container">
-        <span class="slot-label">Slot 2</span>
+        <span class="slot-label">West Midlands Railway</span>
         <div class="blanks-container">
             <input type="text" id="slot2-1" oninput="checkAnswer(2)">
             <input type="text" id="slot2-2" oninput="checkAnswer(2)">
@@ -100,7 +100,7 @@
     </div>
 
     <div class="slot-container">
-        <span class="slot-label">Slot 3</span>
+        <span class="slot-label">Northern Railway</span>
         <div class="blanks-container">
             <input type="text" id="slot3-1" oninput="checkAnswer(3)">
             <input type="text" id="slot3-2" oninput="checkAnswer(3)">
@@ -111,7 +111,7 @@
     </div>
 
     <div class="slot-container">
-        <span class="slot-label">Slot 4</span>
+        <span class="slot-label">South Eastern Railway</span>
         <div class="blanks-container">
             <input type="text" id="slot4-1" oninput="checkAnswer(4)">
             <input type="text" id="slot4-2" oninput="checkAnswer(4)">
@@ -133,45 +133,30 @@
             ["DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER"],
             ["ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"]
         ];
-        const rowAttempts = [0, 0, 0, 0];
-        const RATE_LIMIT = 5;
-        let allFilled = [false, false, false, false];
+        let allFilled = [false, false, false, false]; // Track if each row is completed
 
         function checkAnswer(rowIndex) {
-            const rowCorrectAnswers = correctAnswers[rowIndex - 1];
+            const rowCorrectAnswers = [...correctAnswers[rowIndex - 1]]; // Copy correct answers for each row
             const blanks = Array.from(document.querySelectorAll(`#slot${rowIndex}-1, #slot${rowIndex}-2, #slot${rowIndex}-3, #slot${rowIndex}-4, #slot${rowIndex}-5`));
             let correctCount = 0;
 
-            blanks.forEach((blank) => {
+            blanks.forEach(blank => {
                 const userAnswer = blank.value.toUpperCase().trim();
-                if (rowCorrectAnswers.includes(userAnswer)) {
+                const answerIndex = rowCorrectAnswers.indexOf(userAnswer);
+
+                if (answerIndex !== -1) {
+                    rowCorrectAnswers.splice(answerIndex, 1); // Remove matched answer
+                    blank.style.backgroundColor = "#d4edda"; // Green background for correct answers
                     blank.disabled = true;
                     correctCount++;
-                } else if (userAnswer && !rowCorrectAnswers.includes(userAnswer)) {
-                    blank.value = ""; // Clear incorrect answer
-                    document.getElementById("errorMessage").style.display = "block"; // Show error message
-                    setTimeout(() => {
-                        document.getElementById("errorMessage").style.display = "none"; // Hide after 2 seconds
-                    }, 2000);
+                } else if (userAnswer) {
+                    blank.style.backgroundColor = "#f8d7da"; // Red background for incorrect answers
+                } else {
+                    blank.style.backgroundColor = ""; // Reset background if blank
                 }
             });
 
-            if (correctCount === 5) {
-                allFilled[rowIndex - 1] = true;
-            }
-
-            rowAttempts[rowIndex - 1]++;
-            if (rowAttempts[rowIndex - 1] >= RATE_LIMIT) {
-                alert("Rate limit exceeded! Wait 5 seconds before trying again.");
-                blanks.forEach(blank => blank.disabled = true);
-                setTimeout(() => {
-                    if (!allFilled[rowIndex - 1]) {
-                        blanks.forEach(blank => blank.disabled = false);
-                    }
-                    rowAttempts[rowIndex - 1] = 0;
-                }, 5000);
-            }
-
+            allFilled[rowIndex - 1] = correctCount === 5;
             checkCompletion();
         }
 
