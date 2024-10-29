@@ -124,7 +124,7 @@
         }
 
         function submitAnswer() {
-            const userAnswer = document.getElementById('answerInput').value.toLowerCase();
+            const userAnswer = document.getElementById('answerInput').value.toLowerCase().trim();
             const blanks = document.getElementsByClassName('blank');
             
             document.getElementById('errorMessage').textContent = '';
@@ -140,9 +140,10 @@
                 return;
             }
 
-            // Fill selected blank with individual answer if it matches
-            if (selectedBlankIndex !== null && userAnswer === correctAnswers[selectedBlankIndex].toLowerCase()) {
+            // Validate individual answer with the selected blank
+            if (selectedBlankIndex !== null && userAnswer === correctAnswers[selectedBlankIndex]) {
                 blanks[selectedBlankIndex].value = userAnswer;
+                blanks[selectedBlankIndex].disabled = true; // Disable once filled
                 filledCount++;
                 selectedBlankIndex = null;
             } else {
