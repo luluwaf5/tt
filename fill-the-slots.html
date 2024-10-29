@@ -18,11 +18,14 @@
         h1 {
             font-size: 2rem;
             color: #333;
+            text-align: center;
         }
 
         .slot-container {
             margin-bottom: 20px;
             text-align: center;
+            width: 100%;
+            max-width: 600px;
         }
 
         .slot-label {
@@ -35,16 +38,17 @@
 
         .blanks-container {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 10px;
             margin-bottom: 10px;
         }
 
         .blank {
-            width: 150px;
+            width: 140px;
             height: 50px;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             border: 2px solid #333;
             background-color: white;
             box-sizing: border-box;
@@ -54,7 +58,8 @@
         input[type="text"] {
             padding: 10px;
             font-size: 1rem;
-            width: 140px;
+            width: 100%; /* Set to full width on smaller screens */
+            max-width: 120px;
             height: 40px;
             text-align: center;
             border: 1px solid #ddd;
@@ -67,6 +72,7 @@
         #message, #errorMessage {
             font-size: 1.2em;
             margin-top: 10px;
+            text-align: center;
             display: none;
         }
 
@@ -82,13 +88,30 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            display: inline-block;
         }
 
         #submitAllButton:hover {
             background-color: #005a99;
         }
 
+        /* Mobile Styles */
+        @media (max-width: 600px) {
+            .blank {
+                width: 100%; /* Full width on small screens */
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            input[type="text"] {
+                max-width: 100%;
+            }
+
+            #submitAllButton {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -174,17 +197,14 @@
                 }
             });
 
-            // If all answers are correct for the row, mark it as filled
             if (correctCount === 5) {
                 allFilled[rowIndex - 1] = true;
             }
 
-            // Increment attempt count for the row and check rate limit
             rowAttempts[rowIndex - 1]++;
             if (rowAttempts[rowIndex - 1] >= RATE_LIMIT) {
                 alert("Rate limit exceeded for this row! Please wait 5 seconds before trying again.");
 
-                // Disable inputs in the row for 5 seconds
                 blanks.forEach(blank => blank.disabled = true);
                 setTimeout(() => {
                     if (!allFilled[rowIndex - 1]) {
