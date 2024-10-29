@@ -133,6 +133,7 @@
             if (userAnswer === "all") {
                 correctAnswers.forEach((answer, index) => {
                     blanks[index].value = answer;
+                    blanks[index].disabled = true;  // Prevent further editing
                 });
                 filledCount = correctAnswers.length;
                 document.getElementById('codeMessage').style.display = 'block';
@@ -140,10 +141,10 @@
                 return;
             }
 
-            // Validate individual answer with the selected blank
+            // Validate and place individual answers
             if (selectedBlankIndex !== null && userAnswer === correctAnswers[selectedBlankIndex]) {
                 blanks[selectedBlankIndex].value = userAnswer;
-                blanks[selectedBlankIndex].disabled = true; // Disable once filled
+                blanks[selectedBlankIndex].disabled = true; // Prevent further editing on that blank
                 filledCount++;
                 selectedBlankIndex = null;
             } else {
