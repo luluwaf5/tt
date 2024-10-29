@@ -7,6 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -18,48 +19,56 @@
             font-size: 1.8rem;
             color: #333;
             text-align: center;
+            margin-bottom: 20px;
         }
 
         .slot-container {
             margin-bottom: 20px;
+            text-align: center;
             width: 100%;
             max-width: 600px;
-            text-align: center;
         }
 
         .slot-label {
             font-weight: bold;
-            font-size: 1rem;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
             color: #007ACC;
-            margin-bottom: 5px;
         }
 
         .blanks-container {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             gap: 5px;
         }
 
         input[type="text"] {
             width: 100%;
-            max-width: 80px;
-            height: 35px;
+            max-width: 120px;
+            height: 40px;
             font-size: 1rem;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 5px;
+            box-sizing: border-box;
             text-transform: uppercase;
         }
 
         #submitAllButton {
             margin-top: 20px;
-            padding: 10px;
+            padding: 10px 20px;
             font-size: 1rem;
             background-color: #007ACC;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            display: inline-block;
+        }
+
+        #submitAllButton:hover {
+            background-color: #005a99;
         }
 
         #message, #errorMessage {
@@ -71,6 +80,21 @@
 
         #message { color: green; }
         #errorMessage { color: red; }
+
+        /* Mobile Styles */
+        @media (max-width: 600px) {
+            input[type="text"] {
+                width: 100%;
+                font-size: 1rem;
+                padding: 8px;
+            }
+
+            #submitAllButton {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
