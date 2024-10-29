@@ -35,20 +35,6 @@
             font-size: 1rem;
             border: 2px solid #333;
             background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        input.blank {
-            text-align: center;
-            font-size: 1rem;
-            border: 2px solid #333;
-            background-color: white;
-            width: 120px;
-            height: 50px;
-            margin: 5px;
             box-sizing: border-box;
         }
 
@@ -60,6 +46,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
+            margin-top: 20px;
         }
 
         button:hover {
@@ -105,6 +92,8 @@
         <input class="blank" id="blank7" placeholder="_" onblur="validateAnswer(this)">
         <input class="blank" id="blank8" placeholder="_" onblur="validateAnswer(this)">
     </div>
+
+    <button onclick="submitAllAnswers()">Submit All</button>
     
     <p id="errorMessage" style="color:red;"></p>
     <p id="codeMessage">Your Code: 1234</p>
@@ -127,6 +116,30 @@
                 blank.value = ""; // Clear incorrect answer
                 document.getElementById('errorMessage').textContent = 'Incorrect answer or already entered, please try again.';
             }
+        }
+
+        function submitAllAnswers() {
+            document.getElementById('errorMessage').textContent = '';
+            const blanks = document.getElementsByClassName('blank');
+            let allCorrect = true;
+
+            Array.from(blanks).forEach(blank => {
+                const userAnswer = blank.value.toLowerCase().trim();
+
+                if (correctAnswers.includes(userAnswer) && !filledAnswers.includes(userAnswer)) {
+                    filledAnswers.push(userAnswer);
+                    blank.disabled = true;
+                } else if (userAnswer !== "" && !filledAnswers.includes(userAnswer)) {
+                    blank.value = ""; // Clear incorrect answer
+                    allCorrect = false;
+                }
+            });
+
+            if (!allCorrect) {
+                document.getElementById('errorMessage').textContent = 'Some answers were incorrect or duplicates. Please try again.';
+            }
+
+            checkCompletion();
         }
 
         function checkCompletion() {
