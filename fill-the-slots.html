@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fill in the Slots</title>
     <style>
-        /* (Existing styles) */
+        /* Existing styles */
     </style>
 </head>
 <body>
 
     <h1>Allocate the correct tickets</h1>
 
-    <!-- Slot 1 to Slot 4 (same HTML structure) -->
+    <!-- Slot 1 to Slot 4 (HTML structure unchanged) -->
 
     <button onclick="checkAnswers()">Submit</button>
 
@@ -36,6 +36,12 @@
         let rateLimited = false;
 
         function checkAnswers() {
+            // Hide all messages initially
+            document.getElementById("message").style.display = "none";
+            document.getElementById("errorMessage").style.display = "none";
+            document.getElementById("rateLimitMessage").style.display = "none";
+            document.getElementById("trainTimesButton").style.display = "none";
+
             if (rateLimited) {
                 document.getElementById('rateLimitMessage').style.display = 'block';
                 return;
