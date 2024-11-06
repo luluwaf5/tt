@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill in the Slots</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .slot-container {
+            margin-bottom: 15px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .slot-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1.1rem;
+            color: #007ACC;
+        }
+
+        .blanks-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .blank-input {
+            width: 80px;
+            height: 35px;
+            text-align: center;
+            font-size: 1em;
+            border: 2px solid #333;
+            background-color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
+            flex: 1 1 60px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            max-width: 200px;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        button:hover {
+            background-color: #005a99;
+        }
+
+        #message, #errorMessage, #rateLimitMessage {
+            font-size: 1.2em;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        #message {
+            color: green;
+        }
+
+        #errorMessage, #rateLimitMessage {
+            color: red;
+        }
+
+        #trainTimesButton {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        #trainTimesButton:hover {
+            background-color: #005a99;
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .blank-input {
+                width: 60px;
+                height: 30px;
+                font-size: 0.9em;
+            }
+
+            .slot-label {
+                font-size: 1rem;
+            }
+
+            button {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+
+            #message, #errorMessage, #rateLimitMessage {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Allocate the correct tickets</h1>
+
+    <!-- Slot 1 -->
+    <div class="slot-container">
+        <span class="slot-label">South Western Railway</span>
+        <div class="blanks-container">
+            <input type="text" class="blank-input" id="slot1-1" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot1-2" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot1-3" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot1-4" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot1-5" maxlength="15" placeholder="_">
+        </div>
+    </div>
+
+    <!-- Slot 2 -->
+    <div class="slot-container">
+        <span class="slot-label">West Midlands Railway</span>
+        <div class="blanks-container">
+            <input type="text" class="blank-input" id="slot2-1" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot2-2" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot2-3" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot2-4" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot2-5" maxlength="15" placeholder="_">
+        </div>
+    </div>
+
+    <!-- Slot 3 -->
+    <div class="slot-container">
+        <span class="slot-label">Northern Railway</span>
+        <div class="blanks-container">
+            <input type="text" class="blank-input" id="slot3-1" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot3-2" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot3-3" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot3-4" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot3-5" maxlength="15" placeholder="_">
+        </div>
+    </div>
+
+    <!-- Slot 4 -->
+    <div class="slot-container">
+        <span class="slot-label">South Eastern Railway</span>
+        <div class="blanks-container">
+            <input type="text" class="blank-input" id="slot4-1" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot4-2" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot4-3" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot4-4" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot4-5" maxlength="15" placeholder="_">
+        </div>
+    </div>
+
+    <button onclick="checkAnswers()">Submit</button>
+
+    <div id="message">Congratulations! You've unlocked the train schedule.</div>
+    <p id="errorMessage"></p>
+    <p id="rateLimitMessage">Rate limit exceeded! Please wait before submitting again.</p>
+
+    <button id="trainTimesButton" onclick="showTrainTimes()">Click to See Train Times</button>
+
+    <script>
+        const correctAnswers = [
+            "PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES",
+            "LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA",
+            "DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER",
+            "ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"
+        ];
+
+        const RATE_LIMIT = 5;
+        const TIMEOUT = 5000;
+        let submissionCount = 0;
+        let rateLimited = false;
+
+        function checkAnswers() {
+            document.getElementById("message").style.display = "none";
+            document.getElementById("errorMessage").style.display = "none";
+            document.getElementById("rateLimitMessage").style.display = "none";
+            document.getElementById("trainTimesButton").style.display = "none";
+
+            const blanks = document.querySelectorAll('.blank-input');
+            const userAnswers = Array.from(blanks).map(input => input.value.toUpperCase());
+
+            let allCorrect = true;
+
+            blanks.forEach((input, index) => {
+                if (correctAnswers.includes(input.value.toUpperCase())) {
+                    input.style.borderColor = 'green';
+                } else {
+                    input.style.borderColor = 'red';
+                    allCorrect = false;
+                }
+            });
+
+            if (rateLimited) {
+                document.getElementById('rateLimitMessage').style.display = 'block';
+                return;
+            }
+
+            if (allCorrect && userAnswers.length === correctAnswers.length) {
+                document.getElementById("message").style.display = "block";
+                document.getElementById("trainTimesButton").style.display = "block";
+            } else {
+                document.getElementById('errorMessage').textContent = 'Some answers are incorrect. Please try again.';
+                document.getElementById('errorMessage').style.display = 'block';
+                submissionCount++;
+            }
+
+            if (submissionCount >= RATE_LIMIT) {
+                rateLimited = true;
+                document.getElementById('rateLimitMessage').style.display = 'block';
+                setTimeout(() => {
+                    rateLimited = false;
+                    submissionCount = 0;
+                    document.getElementById('rateLimitMessage').style.display = 'none';
+                }, TIMEOUT);
+            }
+        }
+
+        function showTrainTimes() {
+            window.location.href = 'train-schedule.html';
+        }
+    </script>
+
+</body>
+</html>
