@@ -173,16 +173,15 @@
 
     <script>
         const correctAnswers = [
-            "PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES",  // Slot 1 answers
-            "LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA",    // Slot 2 answers
-            "DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER",     // Slot 3 answers
-            "ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"        // Slot 4 answers
+            "PATRICIA", "WILLIAM", "JENNIFER", "MICHAEL", "JAMES",
+            "LINDA", "RICHARD", "BARBARA", "CHARLES", "JESSICA",
+            "DAVID", "SARAH", "DANIEL", "NANCY", "CHRISTOPHER",
+            "ANTHONY", "KAREN", "GEORGE", "SUSAN", "MATTHEW"
         ];
 
-        let filledCount = 0;
-        let submissionCount = 0;
         const RATE_LIMIT = 5;
         const TIMEOUT = 5000;
+        let submissionCount = 0;
         let rateLimited = false;
 
         function checkAnswers() {
@@ -191,24 +190,24 @@
                 return;
             }
 
-            let allCorrect = true;
-            correctAnswers.forEach((answer, index) => {
-                const input = document.getElementById(`slot${Math.floor(index / 5) + 1}-${(index % 5) + 1}`);
-                if (input.value.toUpperCase() !== answer) {
-                    input.style.borderColor = 'red';
-                    allCorrect = false;
-                } else {
-                    input.style.borderColor = 'green';
-                    filledCount++;
-                }
-            });
+            const userAnswers = [];
+            const blanks = document.querySelectorAll('.blank-input');
+
+            blanks.forEach(input => userAnswers.push(input.value.toUpperCase()));
+
+            const sortedUserAnswers = userAnswers.sort();
+            const sortedCorrectAnswers = [...correctAnswers].sort();
+
+            const allCorrect = JSON.stringify(sortedUserAnswers) === JSON.stringify(sortedCorrectAnswers);
 
             if (allCorrect) {
                 document.getElementById("message").style.display = "block";
                 document.getElementById("trainTimesButton").style.display = "block";
+                blanks.forEach(input => input.style.borderColor = 'green');
             } else {
                 document.getElementById('errorMessage').textContent = 'Some answers are incorrect. Please try again.';
                 document.getElementById('errorMessage').style.display = 'block';
+                blanks.forEach(input => input.style.borderColor = 'red');
                 submissionCount++;
             }
 
