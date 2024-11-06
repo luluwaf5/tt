@@ -109,7 +109,7 @@
 
     <!-- Slot 1 -->
     <div class="slot-container">
-        <span class="slot-label">South Western Railway </span>
+        <span class="slot-label">South Western Railway</span>
         <div class="blanks-container">
             <input type="text" class="blank-input" id="slot1-1" maxlength="15" placeholder="_">
             <input type="text" class="blank-input" id="slot1-2" maxlength="15" placeholder="_">
@@ -119,7 +119,41 @@
         </div>
     </div>
 
-    <!-- Slot 2, Slot 3, Slot 4 structure same as above -->
+    <!-- Slot 2 -->
+    <div class="slot-container">
+        <span class="slot-label">West Midlands Railway</span>
+        <div class="blanks-container">
+            <input type="text" class="blank-input" id="slot2-1" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot2-2" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot2-3" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot2-4" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot2-5" maxlength="15" placeholder="_">
+        </div>
+    </div>
+
+    <!-- Slot 3 -->
+    <div class="slot-container">
+        <span class="slot-label">Northern Railway</span>
+        <div class="blanks-container">
+            <input type="text" class="blank-input" id="slot3-1" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot3-2" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot3-3" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot3-4" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot3-5" maxlength="15" placeholder="_">
+        </div>
+    </div>
+
+    <!-- Slot 4 -->
+    <div class="slot-container">
+        <span class="slot-label">South Eastern Railway</span>
+        <div class="blanks-container">
+            <input type="text" class="blank-input" id="slot4-1" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot4-2" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot4-3" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot4-4" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot4-5" maxlength="15" placeholder="_">
+        </div>
+    </div>
 
     <button onclick="checkAnswers()">Submit</button>
 
@@ -143,37 +177,36 @@
         let rateLimited = false;
 
         function checkAnswers() {
-            // Hide all messages initially
             document.getElementById("message").style.display = "none";
             document.getElementById("errorMessage").style.display = "none";
             document.getElementById("rateLimitMessage").style.display = "none";
             document.getElementById("trainTimesButton").style.display = "none";
 
-            // Reset input borders to default
             const blanks = document.querySelectorAll('.blank-input');
-            blanks.forEach(input => input.style.borderColor = '#333');
+            const userAnswers = Array.from(blanks).map(input => input.value.toUpperCase());
+
+            let allCorrect = true;
+
+            blanks.forEach((input, index) => {
+                if (correctAnswers.includes(input.value.toUpperCase())) {
+                    input.style.borderColor = 'green';
+                } else {
+                    input.style.borderColor = 'red';
+                    allCorrect = false;
+                }
+            });
 
             if (rateLimited) {
                 document.getElementById('rateLimitMessage').style.display = 'block';
                 return;
             }
 
-            const userAnswers = [];
-            blanks.forEach(input => userAnswers.push(input.value.toUpperCase()));
-
-            const sortedUserAnswers = userAnswers.sort();
-            const sortedCorrectAnswers = [...correctAnswers].sort();
-
-            const allCorrect = JSON.stringify(sortedUserAnswers) === JSON.stringify(sortedCorrectAnswers);
-
-            if (allCorrect) {
+            if (allCorrect && userAnswers.length === correctAnswers.length) {
                 document.getElementById("message").style.display = "block";
                 document.getElementById("trainTimesButton").style.display = "block";
-                blanks.forEach(input => input.style.borderColor = 'green');
             } else {
                 document.getElementById('errorMessage').textContent = 'Some answers are incorrect. Please try again.';
                 document.getElementById('errorMessage').style.display = 'block';
-                blanks.forEach(input => input.style.borderColor = 'red');
                 submissionCount++;
             }
 
