@@ -107,29 +107,33 @@
         const correctAnswers = ["google", "facebook", "lyft", "viator", "tripadvisor", "uber", "payment", "user"];
 
         function checkAnswers() {
-            let allCorrect = true;
-            document.getElementById('errorMessage').textContent = '';
+            const userAnswers = [];
+            const blanks = document.querySelectorAll('.blank-input');
 
-            correctAnswers.forEach((answer, index) => {
-                const input = document.getElementById(`blank${index + 1}`);
-                if (input.value.toLowerCase() !== answer.toLowerCase()) {
-                    input.style.borderColor = 'red';
-                    allCorrect = false;
-                } else {
-                    input.style.borderColor = 'green';
-                }
+            blanks.forEach(input => {
+                userAnswers.push(input.value.toLowerCase());
             });
+
+            // Sort and compare the arrays
+            const sortedUserAnswers = userAnswers.sort();
+            const sortedCorrectAnswers = [...correctAnswers].sort();
+
+            // Compare sorted arrays for matching answers
+            const allCorrect = JSON.stringify(sortedUserAnswers) === JSON.stringify(sortedCorrectAnswers);
 
             if (allCorrect) {
                 document.getElementById('codeMessage').style.display = 'block';
                 document.getElementById('continueButton').style.display = 'block';
+                blanks.forEach(input => input.style.borderColor = 'green');
             } else {
                 document.getElementById('errorMessage').textContent = 'Some answers are incorrect. Please try again.';
+                document.getElementById('errorMessage').style.display = 'block';
+                blanks.forEach(input => input.style.borderColor = 'red');
             }
         }
 
         function continueToNext() {
-            window.location.href = 'enter-code.html';  // Redirect to the Enter Code page
+            window.location.href = 'enter-code.html';
         }
     </script>
 
