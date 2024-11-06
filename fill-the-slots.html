@@ -5,14 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fill in the Slots</title>
     <style>
-        /* Existing styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .slot-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slot-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1.2rem;
+            color: #007ACC;
+        }
+
+        .blanks-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .blank-input {
+            width: 120px;
+            height: 40px;
+            text-align: center;
+            font-size: 1.2em;
+            border: 2px solid #333;
+            background-color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #005a99;
+        }
+
+        #message {
+            font-size: 1.5em;
+            color: green;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #errorMessage {
+            color: red;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #rateLimitMessage {
+            color: red;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #trainTimesButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #trainTimesButton:hover {
+            background-color: #005a99;
+        }
     </style>
 </head>
 <body>
 
     <h1>Allocate the correct tickets</h1>
 
-    <!-- Slot 1 to Slot 4 (HTML structure unchanged) -->
+    <!-- Slot 1 -->
+    <div class="slot-container">
+        <span class="slot-label">South Western Railway </span>
+        <div class="blanks-container">
+            <input type="text" class="blank-input" id="slot1-1" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot1-2" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot1-3" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot1-4" maxlength="15" placeholder="_">
+            <input type="text" class="blank-input" id="slot1-5" maxlength="15" placeholder="_">
+        </div>
+    </div>
+
+    <!-- Slot 2, Slot 3, Slot 4 structure same as above -->
 
     <button onclick="checkAnswers()">Submit</button>
 
@@ -42,14 +149,16 @@
             document.getElementById("rateLimitMessage").style.display = "none";
             document.getElementById("trainTimesButton").style.display = "none";
 
+            // Reset input borders to default
+            const blanks = document.querySelectorAll('.blank-input');
+            blanks.forEach(input => input.style.borderColor = '#333');
+
             if (rateLimited) {
                 document.getElementById('rateLimitMessage').style.display = 'block';
                 return;
             }
 
             const userAnswers = [];
-            const blanks = document.querySelectorAll('.blank-input');
-
             blanks.forEach(input => userAnswers.push(input.value.toUpperCase()));
 
             const sortedUserAnswers = userAnswers.sort();
@@ -60,15 +169,11 @@
             if (allCorrect) {
                 document.getElementById("message").style.display = "block";
                 document.getElementById("trainTimesButton").style.display = "block";
-                blanks.forEach(input => {
-                    input.style.borderColor = 'green';
-                });
+                blanks.forEach(input => input.style.borderColor = 'green');
             } else {
                 document.getElementById('errorMessage').textContent = 'Some answers are incorrect. Please try again.';
                 document.getElementById('errorMessage').style.display = 'block';
-                blanks.forEach(input => {
-                    input.style.borderColor = 'red';
-                });
+                blanks.forEach(input => input.style.borderColor = 'red');
                 submissionCount++;
             }
 
