@@ -22,19 +22,31 @@
 
         .blanks-container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
         }
 
         .blank {
-            width: 120px;
-            height: 50px;
+            width: 120px; /* Increased width */
+            height: 60px; /* Increased height */
             text-align: center;
-            font-size: 1rem;
+            font-size: 1.2em; /* Adjust font size */
             border: 2px solid #333;
             background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             box-sizing: border-box;
         }
 
@@ -46,7 +58,6 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            margin-top: 20px;
         }
 
         button:hover {
@@ -83,17 +94,18 @@
     <h1>Discover the stations</h1>
 
     <div class="blanks-container">
-        <input class="blank" id="blank1" placeholder="_" onblur="validateAnswer(this)">
-        <input class="blank" id="blank2" placeholder="_" onblur="validateAnswer(this)">
-        <input class="blank" id="blank3" placeholder="_" onblur="validateAnswer(this)">
-        <input class="blank" id="blank4" placeholder="_" onblur="validateAnswer(this)">
-        <input class="blank" id="blank5" placeholder="_" onblur="validateAnswer(this)">
-        <input class="blank" id="blank6" placeholder="_" onblur="validateAnswer(this)">
-        <input class="blank" id="blank7" placeholder="_" onblur="validateAnswer(this)">
-        <input class="blank" id="blank8" placeholder="_" onblur="validateAnswer(this)">
+        <span class="blank" id="blank1">_</span>
+        <span class="blank" id="blank2">_</span>
+        <span class="blank" id="blank3">_</span>
+        <span class="blank" id="blank4">_</span>
+        <span class="blank" id="blank5">_</span>
+        <span class="blank" id="blank6">_</span>
+        <span class="blank" id="blank7">_</span>
+        <span class="blank" id="blank8">_</span>
     </div>
 
-    <button onclick="submitAllAnswers()">Submit All</button>
+    <input type="text" id="answerInput" placeholder="Enter your answer">
+    <button onclick="checkAnswer()">Submit</button>
     
     <p id="errorMessage" style="color:red;"></p>
     <p id="codeMessage">Your Code: 1234</p>
@@ -101,57 +113,42 @@
 
     <script>
         const correctAnswers = ["google", "facebook", "lyft", "viator", "tripadvisor", "uber", "payment", "user"];
-        let filledAnswers = []; // Track filled answers to avoid duplicates
+        let filledCount = 0;
 
-        function validateAnswer(blank) {
-            const userAnswer = blank.value.toLowerCase().trim();
-            document.getElementById('errorMessage').textContent = '';
-
-            // Check if the answer is correct, not duplicated, and in the correct list
-            if (correctAnswers.includes(userAnswer) && !filledAnswers.includes(userAnswer)) {
-                filledAnswers.push(userAnswer); // Mark this answer as filled
-                blank.disabled = true; // Disable input once correct answer is entered
-                checkCompletion();
-            } else if (userAnswer !== "") {
-                blank.value = ""; // Clear incorrect answer
-                document.getElementById('errorMessage').textContent = 'Incorrect answer or already entered, please try again.';
-            }
-        }
-
-        function submitAllAnswers() {
-            document.getElementById('errorMessage').textContent = '';
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answerInput').value.toLowerCase();  // Convert to lowercase
             const blanks = document.getElementsByClassName('blank');
-            let allCorrect = true;
+            let answerFound = false;
 
-            Array.from(blanks).forEach(blank => {
-                const userAnswer = blank.value.toLowerCase().trim();
+            // Clear error message
+            document.getElementById('errorMessage').textContent = '';
 
-                if (correctAnswers.includes(userAnswer) && !filledAnswers.includes(userAnswer)) {
-                    filledAnswers.push(userAnswer);
-                    blank.disabled = true;
-                } else if (userAnswer !== "" && !filledAnswers.includes(userAnswer)) {
-                    blank.value = ""; // Clear incorrect answer
-                    allCorrect = false;
+            // Check if the answer matches and fill the next blank
+            correctAnswers.forEach((answer, index) => {
+                if (userAnswer === answer.toLowerCase() && blanks[index].textContent === "_") {  // Convert correctAnswer to lowercase
+                    blanks[index].textContent = answer;
+                    filledCount++;
+                    answerFound = true;
                 }
             });
 
-            if (!allCorrect) {
-                document.getElementById('errorMessage').textContent = 'Some answers were incorrect or duplicates. Please try again.';
+            // Show error message if the answer is incorrect
+            if (!answerFound) {
+                document.getElementById('errorMessage').textContent = 'Incorrect answer, please try again.';
             }
 
-            checkCompletion();
-        }
+            // Clear input field after submission
+            document.getElementById('answerInput').value = "";
 
-        function checkCompletion() {
-            // Show code message if all answers are filled
-            if (filledAnswers.length === correctAnswers.length) {
+            // Check if all blanks are filled
+            if (filledCount === correctAnswers.length) {
                 document.getElementById('codeMessage').style.display = 'block';
                 document.getElementById('continueButton').style.display = 'block';
             }
         }
 
         function continueToNext() {
-            window.location.href = 'enter-code.html';
+            window.location.href = 'enter-code.html';  // Redirect to the Enter Code page
         }
     </script>
 
