@@ -182,14 +182,19 @@
             document.getElementById("rateLimitMessage").style.display = "none";
             document.getElementById("trainTimesButton").style.display = "none";
 
-            const blanks = document.querySelectorAll('.blank-input');
-            const userAnswers = Array.from(blanks).map(input => input.value.toUpperCase());
+            const blanks = Array.from(document.querySelectorAll('.blank-input'));
+            const userAnswers = blanks.map(input => input.value.toUpperCase());
 
+            // Create a copy of correctAnswers to track unmatched answers
+            let remainingAnswers = [...correctAnswers];
             let allCorrect = true;
 
-            blanks.forEach((input, index) => {
-                if (correctAnswers.includes(input.value.toUpperCase())) {
+            blanks.forEach((input) => {
+                const answer = input.value.toUpperCase();
+                if (remainingAnswers.includes(answer)) {
                     input.style.borderColor = 'green';
+                    // Remove this answer from remainingAnswers to avoid duplicates
+                    remainingAnswers.splice(remainingAnswers.indexOf(answer), 1);
                 } else {
                     input.style.borderColor = 'red';
                     allCorrect = false;
@@ -201,11 +206,11 @@
                 return;
             }
 
-            if (allCorrect && userAnswers.length === correctAnswers.length) {
+            if (allCorrect && remainingAnswers.length === 0) {
                 document.getElementById("message").style.display = "block";
                 document.getElementById("trainTimesButton").style.display = "block";
             } else {
-                document.getElementById('errorMessage').textContent = 'Some answers are incorrect. Please try again.';
+                document.getElementById('errorMessage').textContent = 'Some answers are incorrect or duplicated. Please try again.';
                 document.getElementById('errorMessage').style.display = 'block';
                 submissionCount++;
             }
